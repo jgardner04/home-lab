@@ -30,11 +30,11 @@ resource pip 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   location: location
   tags: tags
   sku: {
-    name: 'Standard'
+    name: 'Basic'
     tier: 'Regional'
   }
   properties: {
-    publicIPAllocationMethod: 'Static'
+    publicIPAllocationMethod: 'Dynamic'
   }
 }
 
@@ -50,11 +50,6 @@ resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
     }
     gatewayIpAddress: localGatewayIpAddress
   }
-  zones: [
-    '1'
-    '2'
-    '3'
-  ]
 }
 
 resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
