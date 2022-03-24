@@ -74,8 +74,8 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
       }
     ]
     sku: {
-      name: 'VpnGw2AZ'
-      tier: 'VpnGw2AZ'
+      name: 'VpnGw2'
+      tier: 'VpnGw2'
     }
     gatewayType: 'Vpn'
     vpnType: 'RouteBased'
