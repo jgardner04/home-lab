@@ -1,6 +1,7 @@
 param location string
 param localAddressPrefixes string
 param localGatewayIpAddress string
+param vpnPreSharedKey string
 
 var basename = 'jogardn'
 
@@ -15,5 +16,6 @@ module vnet './network.bicep' = {
     }
     localAddressPrefixes: localAddressPrefixes
     localGatewayIpAddress: localGatewayIpAddress
+    vpnPreSharedKey: vpnPreSharedKey
   } 
 }

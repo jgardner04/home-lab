@@ -3,6 +3,7 @@ param location string
 param tags object
 param localAddressPrefixes string
 param localGatewayIpAddress string
+param vpnPreSharedKey string
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: vnetName
@@ -83,3 +84,24 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
   }
 }
 
+resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
+  name: '${vnetName}-home-connection'
+  location: location
+  properties: {
+    connectionType: 'IPsec'
+    connectionProtocol: 'IKEv2'
+    routingWeight: 10
+    sharedKey: vpnPreSharedKey
+    enableBgp: false
+    localNetworkGateway2: {
+      id: vpnGateway.id
+      properties: {
+
+      }
+    }
+    virtualNetworkGateway1: {
+      id: vpnGateway.id
+      properties: {}
+    }
+  }
+}
