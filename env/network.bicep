@@ -52,3 +52,33 @@ resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
   }
 }
 
+resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+  name: '${vnetName}-vpn-gateway'
+  location: location
+  tags: tags
+  properties: {
+    activeActive: false
+    ipConfigurations: [
+      {
+        id: 'vpnGateway'
+        name: 'vpnGateway'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          publicIPAddress: {
+            id: pip.id
+          }
+          subnet: {
+            id: gatewaySubnet.id
+          }
+        }
+      }
+    ]
+    sku: {
+      name: 'Standard'
+      tier: 'Standard'
+    }
+    gatewayType: 'Vpn'
+    vpnType: 'RouteBased'
+    enableBgp: false
+  }
+}
