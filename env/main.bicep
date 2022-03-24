@@ -19,3 +19,27 @@ module vnet './network.bicep' = {
     vpnPreSharedKey: vpnPreSharedKey
   } 
 }
+
+module logging 'monitoring.bicep' = {
+  name: 'monitoring'
+  params: {
+    namePrefix: 'jogardn'
+    location: location
+    tags: {
+      owner: 'jogardn'
+      resourceType: 'logging'
+    }
+  }
+}
+
+module storage 'storage.bicep' = {
+  name: 'storage'
+  params: {
+    namePrefix: 'jogardn'
+    location: location
+    tags: {
+      owner: 'jogardn'
+      resourceType: 'storage'
+    }
+  }
+}
