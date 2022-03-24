@@ -1,6 +1,8 @@
 param vnetName string
 param location string
 param tags object
+param localAddressPrefixes string
+param localGatewayIpAddress string
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: vnetName
@@ -23,17 +25,27 @@ resource gatewaySubnet 'Microsoft.Network/virtualnetworks/subnets@2015-06-15' = 
   }
 }
 
-resource localGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+resource pip 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
+  name: 'gatewayPip'
+  location: location
+  tags: tags
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+}
+
+resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
   name: '${vnetName}-local-gateway'
   location: location
   tags: tags
   properties: {
-    activeActive: false
-    gatewayType: 'LocalGateway'
-    sku: {
-      name: 'Standard'
-      tier: 'Standard'
+    localNetworkAddressSpace: {
+      addressPrefixes: [
+        '${localAddressPrefixes}'
+      ]
     }
+    gatewayIpAddress: localGatewayIpAddress
   }
 }
 

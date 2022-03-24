@@ -20,6 +20,6 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./env/main.bicep
-          parameters: location=westus2
+          parameters: location=westus2 localAddressPrefixes=${{ secrets.LOCAL_ADDRESS_PREFIX }} localGatewayIpAddress=${{ secrets.LOCAL_GATEWAY_IP }}
           failOnStdErr: false
     

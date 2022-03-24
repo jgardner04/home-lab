@@ -1,4 +1,6 @@
 param location string
+param localAddressPrefixes string
+param localGatewayIpAddress string
 
 var basename = 'jogardn'
 
@@ -11,5 +13,7 @@ module vnet './network.bicep' = {
       owner: 'jogardn'
       resourceType: 'network'
     }
+    localAddressPrefixes: localAddressPrefixes
+    localGatewayIpAddress: localGatewayIpAddress
   } 
 }
