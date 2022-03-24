@@ -14,3 +14,47 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
       }
     }
 }
+
+resource gatewaySubnet 'Microsoft.Network/virtualnetworks/subnets@2015-06-15' = {
+  name: 'GatewaySubnet'
+  parent: vnet
+  properties: {
+    addressPrefix: '10.1.1.0/24'
+  }
+}
+
+resource localGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+  name: '${vnetName}-local-gateway'
+  location: location
+  tags: tags
+  properties: {
+    activeActive: false
+    gatewayType: 'LocalGateway'
+    sku: {
+      name: 'Standard'
+      tier: 'Standard'
+    }
+  }
+}
+
+resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+  name: '${vnetName}-vpn-gateway'
+  location: location
+  tags: tags
+  properties: {
+    activeActive: false
+    gatewayType: 'Vpn'
+    sku: {
+      name: 'VpnGw2AZ'
+      tier: 'VpnGw2AZ'
+    }
+    vpnClientConfiguration: {
+      vpnAuthenticationTypes: [
+        'Certificate'
+      ]
+      vpnClientProtocols: [
+        'IkeV2'
+      ]
+    }
+  }
+}
