@@ -37,21 +37,3 @@ resource localGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
   }
 }
 
-resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
-  name: '${vnetName}-vpn-gateway'
-  location: location
-  tags: tags
-  properties: {
-    activeActive: false
-    gatewayType: 'Vpn'
-    sku: {
-      name: 'VpnGw2AZ'
-      tier: 'VpnGw2AZ'
-    }
-    vpnClientConfiguration: {
-      vpnClientProtocols: [
-        'IkeV2'
-      ]
-    }
-  }
-}
