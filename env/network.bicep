@@ -49,9 +49,6 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
       tier: 'VpnGw2AZ'
     }
     vpnClientConfiguration: {
-      vpnAuthenticationTypes: [
-        'Certificate'
-      ]
       vpnClientProtocols: [
         'IkeV2'
       ]

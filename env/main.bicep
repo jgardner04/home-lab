@@ -11,6 +11,5 @@ module vnet './network.bicep' = {
       owner: 'jogardn'
       resourceType: 'network'
     }
-  }
-  
+  } 
 }
