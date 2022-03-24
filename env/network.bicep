@@ -90,7 +90,7 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
   properties: {
     connectionType: 'IPsec'
     connectionProtocol: 'IKEv2'
-    routingWeight: 10
+    routingWeight: 0
     sharedKey: vpnPreSharedKey
     enableBgp: false
     localNetworkGateway2: {
