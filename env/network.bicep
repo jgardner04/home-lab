@@ -50,6 +50,11 @@ resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
     }
     gatewayIpAddress: localGatewayIpAddress
   }
+  zones: [
+    '1'
+    '2'
+    '3'
+  ]
 }
 
 resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
@@ -82,3 +87,4 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
     enableBgp: false
   }
 }
+
