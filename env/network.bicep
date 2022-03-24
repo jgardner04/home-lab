@@ -33,6 +33,9 @@ resource pip 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
     name: 'Standard'
     tier: 'Regional'
   }
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
 }
 
 resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
