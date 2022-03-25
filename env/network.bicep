@@ -141,7 +141,7 @@ resource privateDns 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 
 resource privateDnsLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   name: '${vnetName}PrivateDnsLink'
-  location: location
+  location: 'global'
   tags: tags
   parent: privateDns
   properties: {
