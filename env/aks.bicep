@@ -40,9 +40,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
       }
     ]
     apiServerAccessProfile: {
-      authorizedIPRanges: [
-        '10.1.0.0/22'
-      ]
       enablePrivateCluster: true
       enablePrivateClusterPublicFQDN: false
       privateDNSZone: 'aks.gardner.local'
