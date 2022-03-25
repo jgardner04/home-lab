@@ -4,7 +4,7 @@ param tags object
 param vnetId string
 
 resource acr 'Microsoft.ContainerRegistry/registries@2021-12-01-preview' = {
-  name: '${namePrefix}-acr'
+  name: '${namePrefix}acr'
   location: location
   tags: tags
 
