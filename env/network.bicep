@@ -12,7 +12,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   properties:{
     addressSpace: {
       addressPrefixes: [
-        '10.1.0.0/16'
+        '10.0.0.0/8'
         ]
       }
     subnets: [
@@ -20,7 +20,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         id: 'gatewaySubnet'
         name: 'GatewaySubnet'
         properties: {
-          addressPrefix: '10.1.1.0/24'
+          addressPrefix: '10.1.0.0/22'
           serviceEndpoints: [
             {
               locations: [
@@ -35,7 +35,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         id: 'aks'
         name: 'AksSubnet'
         properties: {
-          addressPrefix: '10.1.2.0/24'
+          addressPrefix: '10.2.0.0/16'
           serviceEndpoints: [
             {
               locations: [
