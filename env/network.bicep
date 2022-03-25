@@ -133,7 +133,7 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
 }
 
 resource privateDns 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: '${vnetName}PrivateDns'
+  name: '${vnetName}PrivateDns.gardner.local'
   location: 'global'
   tags: tags
   properties: {}
