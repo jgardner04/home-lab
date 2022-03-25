@@ -15,15 +15,16 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         '10.1.0.0/16'
         ]
       }
-    }
-}
-
-resource gatewaySubnet 'Microsoft.Network/virtualnetworks/subnets@2015-06-15' = {
-  name: 'GatewaySubnet'
-  parent: vnet
-  properties: {
-    addressPrefix: '10.1.1.0/24'
-    provisioningState: 'Succeeded'
+    subnets: [
+      {
+        id: 'gatewaySubnet'
+        name: 'GatewaySubnet'
+        properties: {
+          addressPrefix: '10.1.1.0/24'
+          
+        }
+      }
+    ]
   }
 }
 
@@ -70,7 +71,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
             id: pip.id
           }
           subnet: {
-            id: gatewaySubnet.id
+            id: vnet.properties.subnets[0].id
           }
         }
       }
