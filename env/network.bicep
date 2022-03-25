@@ -21,7 +21,13 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         name: 'GatewaySubnet'
         properties: {
           addressPrefix: '10.1.1.0/24'
-          
+        }
+      }
+      {
+        id: 'aks'
+        name: 'AksSubnet'
+        properties: {
+          addressPrefix: '10.1.2.0/24'
         }
       }
     ]
