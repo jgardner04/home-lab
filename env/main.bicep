@@ -41,5 +41,19 @@ module storage 'storage.bicep' = {
       owner: 'jogardn'
       resourceType: 'storage'
     }
+    vnetId: vnet.outputs.vnetId
+  }
+}
+
+module acr 'acr.bicep' = {
+  name: 'acr'
+  params: {
+    namePrefix: 'jogardn'
+    location: location
+    tags: {
+      owner: 'jogardn'
+      resourceType: 'acr'
+    }
+    vnetId: vnet.outputs.vnetId
   }
 }

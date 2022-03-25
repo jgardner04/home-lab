@@ -3,26 +3,24 @@ param location string
 param tags object
 param vnetId string
 
-var name = '${namePrefix}diagstorage'
-
-resource diagStorage 'Microsoft.Storage/storageAccounts@2021-08-01' = {
-  name: name
+resource acr 'Microsoft.ContainerRegistry/registries@2021-12-01-preview' = {
+  name: '${namePrefix}-acr'
   location: location
   tags: tags
+
   sku: {
-    name: 'Standard_LRS'
+    name: 'Premium'
   }
-  kind: 'StorageV2'
+
   properties: {
-    publicNetworkAccess: 'Disabled'
-    networkAcls: {
+    adminUserEnabled: false
+    networkRuleBypassOptions: 'AzureServices'
+    networkRuleSet: {
       defaultAction: 'Deny'
-      bypass: 'AzureServices'
       virtualNetworkRules: [
         {
           action: 'Allow'
           id: vnetId
-          state: 'Succeeded'
         }
       ]
     }
