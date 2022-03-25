@@ -21,6 +21,14 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         name: 'GatewaySubnet'
         properties: {
           addressPrefix: '10.1.1.0/24'
+          serviceEndpoints: [
+            {
+              locations: [
+                location
+              ]
+              service: 'Microsoft.ContainerRegistry'
+            }
+          ]
         }
       }
       {
@@ -28,6 +36,14 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         name: 'AksSubnet'
         properties: {
           addressPrefix: '10.1.2.0/24'
+          serviceEndpoints: [
+            {
+              locations: [
+                location
+              ]
+              service: 'Microsoft.ContainerRegistry'
+            }
+          ]
         }
       }
     ]
