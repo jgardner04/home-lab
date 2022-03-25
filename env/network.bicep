@@ -103,6 +103,8 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
       id: vpnGateway.id
       properties: {}
     }
+    connectionMode: 'Default'
+    dpdTimeoutSeconds: 0
   }
 }
 
