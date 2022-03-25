@@ -23,6 +23,7 @@ resource gatewaySubnet 'Microsoft.Network/virtualnetworks/subnets@2015-06-15' = 
   parent: vnet
   properties: {
     addressPrefix: '10.1.1.0/24'
+    provisioningState: 'Succeeded'
   }
 }
 
