@@ -21,7 +21,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
         name: 'agentpool'
         count: 2
         enableAutoScaling: true
-        enableEncryptionAtHost: true
         enableNodePublicIP: false
         mode: 'System'
         maxCount: 5
