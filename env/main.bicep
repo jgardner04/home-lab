@@ -41,7 +41,6 @@ module storage 'storage.bicep' = {
       owner: 'jogardn'
       resourceType: 'storage'
     }
-    vnetId: vnet.outputs.vnetId
   }
 }
 
