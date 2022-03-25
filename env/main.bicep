@@ -4,6 +4,7 @@ param localGatewayIpAddress string
 param vpnPreSharedKey string
 
 var basename = 'jogardn'
+var owner = 'jogardn'
 
 module vnet './network.bicep' = {
   name: 'network'
@@ -11,7 +12,7 @@ module vnet './network.bicep' = {
     location: location
     vnetName: '${basename}-vnet'
     tags: {
-      owner: 'jogardn'
+      owner: owner
       resourceType: 'network'
     }
     localAddressPrefixes: localAddressPrefixes
@@ -23,10 +24,10 @@ module vnet './network.bicep' = {
 module logging 'monitoring.bicep' = {
   name: 'monitoring'
   params: {
-    namePrefix: 'jogardn'
+    namePrefix: basename
     location: location
     tags: {
-      owner: 'jogardn'
+      owner: owner
       resourceType: 'logging'
     }
   }
@@ -35,10 +36,10 @@ module logging 'monitoring.bicep' = {
 module storage 'storage.bicep' = {
   name: 'storage'
   params: {
-    namePrefix: 'jogardn'
+    namePrefix: basename
     location: location
     tags: {
-      owner: 'jogardn'
+      owner: owner
       resourceType: 'storage'
     }
   }
@@ -47,14 +48,28 @@ module storage 'storage.bicep' = {
 module acr 'acr.bicep' = {
   name: 'acr'
   params: {
-    namePrefix: 'jogardn'
+    namePrefix: basename
     location: location
     tags: {
-      owner: 'jogardn'
+      owner: owner
       resourceType: 'acr'
     }
     gatewaySubnetId: vnet.outputs.gatewaySubnetId
     aksSubnetId: vnet.outputs.aksSubnetId
 
+  }
+}
+
+module aks 'aks.bicep' = {
+  name: 'aks'
+  params: {
+    namePrefix: basename
+    location: location
+    tags: {
+      owner: owner
+      resourceType: 'aks'
+    }
+    aksSubnetId: vnet.outputs.aksSubnetId
+    logWorkspaceId: logging.outputs.logWorkspaceId
   }
 }
