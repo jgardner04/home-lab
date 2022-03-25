@@ -35,7 +35,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
         scaleSetEvictionPolicy: 'Delete'
         tags: tags
         type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D4s_v4'
+        vmSize: 'Standard_DS3_v2'
         vnetSubnetID: aksSubnetId
       }
     ]
