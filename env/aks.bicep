@@ -3,6 +3,7 @@ param location string
 param tags object
 param aksSubnetId string
 param logWorkspaceId string
+param privateDnsId string
 
 resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
   name: '${namePrefix}-aks'
@@ -41,7 +42,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
     apiServerAccessProfile: {
       enablePrivateCluster: true
       enablePrivateClusterPublicFQDN: false
-      privateDNSZone: 'aks.gardner.local'
+      privateDNSZone: privateDnsId
     }
     autoUpgradeProfile: {
       upgradeChannel: 'stable'
