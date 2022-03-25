@@ -1,7 +1,6 @@
 param namePrefix string
 param location string
 param tags object
-param vnetId string
 
 var name = '${namePrefix}diagstorage'
 
@@ -18,13 +17,6 @@ resource diagStorage 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     networkAcls: {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
-      virtualNetworkRules: [
-        {
-          action: 'Allow'
-          id: vnetId
-          state: 'Succeeded'
-        }
-      ]
     }
   }
 }
