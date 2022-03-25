@@ -94,7 +94,7 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
     sharedKey: vpnPreSharedKey
     enableBgp: false
     localNetworkGateway2: {
-      id: vpnGateway.id
+      id: localGateway.id
       properties: {
 
       }
