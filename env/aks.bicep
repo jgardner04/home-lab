@@ -51,7 +51,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
       upgradeChannel: 'stable'
     }
     dnsPrefix: '${namePrefix}aks'
-    enableNamespaceResources: true
     enablePodSecurityPolicy: false
     enableRBAC: true
     networkProfile: {
