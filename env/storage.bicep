@@ -2,7 +2,7 @@ param namePrefix string
 param location string
 param tags object
 
-var name = '${namePrefix}${base64(namePrefix)}'
+var name = '${namePrefix}diagstorage'
 
 resource diagStorage 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: name
