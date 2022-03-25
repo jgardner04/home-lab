@@ -117,3 +117,5 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
 }
 
 output vnetId string = vnet.id
+output gatewaySubnetId string = vnet.properties.subnets[0].id
+output aksSubnetId string = vnet.properties.subnets[1].id

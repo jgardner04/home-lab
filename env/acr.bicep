@@ -1,7 +1,8 @@
 param namePrefix string
 param location string
 param tags object
-param vnetId string
+param gatewaySubnetId string
+param aksSubnetId string
 
 resource acr 'Microsoft.ContainerRegistry/registries@2021-12-01-preview' = {
   name: '${namePrefix}acr'
@@ -20,7 +21,11 @@ resource acr 'Microsoft.ContainerRegistry/registries@2021-12-01-preview' = {
       virtualNetworkRules: [
         {
           action: 'Allow'
-          id: vnetId
+          id: gatewaySubnetId
+        }
+        {
+          action: 'Allow'
+          id: aksSubnetId
         }
       ]
     }

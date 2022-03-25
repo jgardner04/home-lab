@@ -53,6 +53,8 @@ module acr 'acr.bicep' = {
       owner: 'jogardn'
       resourceType: 'acr'
     }
-    vnetId: vnet.outputs.vnetId
+    gatewaySubnetId: vnet.outputs.gatewaySubnetId
+    aksSubnetId: vnet.outputs.aksSubnetId
+
   }
 }
