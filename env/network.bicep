@@ -5,6 +5,9 @@ param localAddressPrefixes string
 param localGatewayIpAddress string
 param vpnPreSharedKey string
 
+
+var privateDnsName = 'privatelink.${location}.azmk8s.io'
+
 resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: vnetName
   location: location
@@ -133,7 +136,7 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
 }
 
 resource privateDns 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: '${vnetName}PrivateDns.gardner.local'
+  name: privateDnsName
   location: 'global'
   tags: tags
   properties: {}
