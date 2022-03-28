@@ -137,27 +137,6 @@ resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
   }
 }
 
-resource privateDns 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsName
-  location: 'global'
-  tags: tags
-  properties: {}
-}
-
-resource privateDnsLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  name: '${vnetName}PrivateDnsLink'
-  location: 'global'
-  tags: tags
-  parent: privateDns
-  properties: {
-    registrationEnabled: true
-    virtualNetwork: {
-      id: vnet.id
-    }
-  }
-}
-
 output vnetId string = vnet.id
 output gatewaySubnetId string = vnet.properties.subnets[0].id
 output aksSubnetId string = vnet.properties.subnets[1].id
-output privateDnsId string = privateDns.id

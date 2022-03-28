@@ -71,6 +71,5 @@ module aks 'aks.bicep' = {
     }
     aksSubnetId: vnet.outputs.aksSubnetId
     logWorkspaceId: logging.outputs.logWorkspaceId
-    privateDnsId: vnet.outputs.privateDnsId
   }
 }
