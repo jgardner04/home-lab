@@ -39,6 +39,8 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         name: 'AksSubnet'
         properties: {
           addressPrefix: '10.2.0.0/16'
+          privateEndpointNetworkPolicies: 'Disabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
           serviceEndpoints: [
             {
               locations: [

@@ -11,7 +11,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
   tags: tags
   sku: {
     name: 'Basic'
-    tier: 'Free'
+    tier: 'Paid'
   }
   identity: {
     type: 'SystemAssigned'
@@ -56,8 +56,8 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-01-02-preview' = {
         'IPv4'
       ]
       loadBalancerSku: 'standard'
-      networkPlugin: 'kubenet'
-      networkPolicy: 'calico'
+      networkPlugin: 'azure'
+      networkPolicy: 'azure'
       outboundType: 'loadBalancer'
     }
     nodeResourceGroup: '${namePrefix}-aksInfraRG'
