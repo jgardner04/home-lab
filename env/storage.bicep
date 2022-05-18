@@ -37,3 +37,31 @@ resource filestorage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     }
   }
 }
+
+resource fileservices 'Microsoft.Storage/storageAccounts/fileServices@2021-09-01' = {
+  name: 'default'
+  parent: filestorage
+  properties: {
+    protocolSettings: {
+      smb: {
+        authenticationMethods: 'NTLMv2'
+        channelEncryption: 'AES-256-GCM'
+        multichannel: {
+          enabled: true
+        }
+        versions: 'SMB3.0,SMB3.1.1'
+      }
+    }
+  }
+}
+
+resource fileshare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-09-01' = {
+  name: 'workstation-backup'
+  parent: fileservices
+  properties: {
+    accessTier: 'Premium'
+    enabledProtocols: 'SMB'
+    metadata: {}
+    shareQuota: 5120
+  }
+}
