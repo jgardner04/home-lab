@@ -6,7 +6,7 @@ param localGatewayIpAddress string
 param vpnPreSharedKey string
 
 
-var privateDnsName = 'privatelink.${location}.azmk8s.io'
+// var privateDnsName = 'privatelink.${location}.azmk8s.io'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: vnetName

@@ -28,7 +28,7 @@ resource filestorage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   sku: {
     name: 'Premium_LRS'
   }
-  kind: 'StorageV2'
+  kind: 'FileStorage'
   properties: {
     publicNetworkAccess: 'Disabled'
     networkAcls: {
