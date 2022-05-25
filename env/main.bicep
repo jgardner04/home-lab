@@ -40,3 +40,48 @@ module hubvnet './modules/hub-default.bicep' = {
     tags: tags
   }
 }
+
+module aksvnet './modules/aks-vnet.bicep' = {
+  name: 'aks-vnet'
+  scope: resourceGroup(aksrg.name)
+  params: {
+    vnetName: 'aks-vnet'
+    location: location
+    vnetPrefix: '192.168.4.0/22'
+    subnets: [
+      {
+        name: 'nodes-subnet'
+        subnetPrefix: '192.168.4.0/23'
+        routeTableid: aksroutetable.outputs.routeTableid
+      }
+      {
+        name: 'ingress-subnet'
+        subnetPrefix: '192.168.6.0/24'
+        routeTableid: ''
+      }
+    ]
+
+  }
+}
+
+// Create & assign the route tables
+module aksroutetable './modules/routetable.bicep'={
+  name: 'aks-rt'
+  scope: resourceGroup(aksrg.name)
+  params:{
+    location: location
+    udrName: 'aks-rt'
+    udrRouteName: 'Default-route'
+    nextHopIpAddress: hubvnet.outputs.hubFwPrivateIPAddress
+  }
+}
+module devroutetable './modules/routetable.bicep'={
+  name: 'dev-rt'
+  scope: resourceGroup(devrg.name)
+  params:{
+    location: location
+    udrName: 'dev-rt'
+    udrRouteName: 'Default-route'
+    nextHopIpAddress: hubvnet.outputs.hubFwPrivateIPAddress
+  }
+}
