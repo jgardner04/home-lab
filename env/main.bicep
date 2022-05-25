@@ -1,75 +1,42 @@
+targetScope = 'subscription'
+
 param location string
-param localAddressPrefixes string
-param localGatewayIpAddress string
-param vpnPreSharedKey string
+// param localAddressPrefixes string
+// param localGatewayIpAddress string
+// param vpnPreSharedKey string
 
-var basename = 'jogardn'
+var basename = 'home-lab'
 var owner = 'jogardn'
-
-module vnet './network.bicep' = {
-  name: 'network'
-  params: {
-    location: location
-    vnetName: '${basename}-vnet'
-    tags: {
-      owner: owner
-      resourceType: 'network'
-    }
-    localAddressPrefixes: localAddressPrefixes
-    localGatewayIpAddress: localGatewayIpAddress
-    vpnPreSharedKey: vpnPreSharedKey
-  } 
+var tags = {
+  owner: owner
+  purpose: 'home-lab'
 }
 
-module logging 'monitoring.bicep' = {
-  name: 'monitoring'
-  params: {
-    namePrefix: basename
-    location: location
-    tags: {
-      owner: owner
-      resourceType: 'logging'
-    }
-  }
+resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: '${basename}-hub-rg'
+  location: location
+  tags: tags
 }
 
-module storage 'storage.bicep' = {
-  name: 'storage'
-  params: {
-    namePrefix: basename
-    location: location
-    tags: {
-      owner: owner
-      resourceType: 'storage'
-    }
-  }
+resource aksrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: '${basename}-aks-rg'
+  location: location
+  tags: tags
 }
 
-module acr 'acr.bicep' = {
-  name: 'acr'
-  params: {
-    namePrefix: basename
-    location: location
-    tags: {
-      owner: owner
-      resourceType: 'acr'
-    }
-    gatewaySubnetId: vnet.outputs.gatewaySubnetId
-    aksSubnetId: vnet.outputs.aksSubnetId
-
-  }
+resource devrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: '${basename}-dev-rg'
+  location: location
+  tags: tags
 }
 
-module aks 'aks.bicep' = {
-  name: 'aks'
+module hubvnet './modules/hub-default.bicep' = {
+  name: 'hub-vnet'
+  scope: resourceGroup(hubrg.name)
   params: {
-    namePrefix: basename
     location: location
-    tags: {
-      owner: owner
-      resourceType: 'aks'
-    }
-    aksSubnetId: vnet.outputs.aksSubnetId
-    logWorkspaceId: logging.outputs.logWorkspaceId
+    hubVnetName: '${basename}-hub-vnet'
+    hubFwName: 'hub-fw'
+    tags: tags
   }
 }
