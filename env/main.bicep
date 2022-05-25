@@ -41,7 +41,7 @@ module hubvnet './modules/hub-default.bicep' = {
   }
 }
 
-module aksvnet './modules/aks-vnet.bicep' = {
+module aksvnet './modules/vnet.bicep' = {
   name: 'aks-vnet'
   scope: resourceGroup(aksrg.name)
   params: {
@@ -61,6 +61,29 @@ module aksvnet './modules/aks-vnet.bicep' = {
       }
     ]
 
+  }
+}
+
+module devvnet './modules/vnet.bicep' = {
+  name: 'dev-vnet'
+  scope: resourceGroup(devrg.name)
+  params: {
+    location: location
+    vnetName: 'dev-vnet'
+    vnetPrefix: '192.168.2.0/24'
+    subnets: [
+      {
+        name: 'agents-subnet'
+        subnetPrefix: '192.168.2.0/25'
+        routeTableid: devroutetable.outputs.routeTableid
+      }
+      {
+        name: 'PE-subnet'
+        subnetPrefix: '192.168.2.224/27'
+        routeTableid: ''
+      }
+    ]
+    
   }
 }
 
