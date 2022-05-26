@@ -1,6 +1,5 @@
 param localVnetName string
 param remoteVnetName string
-param remoteVnetRg string
 param remoteVnetID string
 
 resource peer 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-06-01' = {

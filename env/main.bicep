@@ -98,7 +98,6 @@ module hubtoakspeering './modules/vnet-peering.bicep' = {
   params:{
     localVnetName: hubvnet.name
     remoteVnetName: aksvnet.name
-    remoteVnetRg: aksrg.name
     remoteVnetID: aksvnet.outputs.vnetID
   }
 }
@@ -112,7 +111,6 @@ module akstohubpeering './modules/vnet-peering.bicep' = {
   params:{
     localVnetName: aksvnet.name
     remoteVnetName: hubvnet.name
-    remoteVnetRg: hubrg.name
     remoteVnetID: hubvnet.outputs.hubVnetId
   }
 }
@@ -127,7 +125,6 @@ module hubtodevpeering './modules/vnet-peering.bicep' = {
   params:{
     localVnetName: hubvnet.name
     remoteVnetName: devvnet.name
-    remoteVnetRg: devrg.name
     remoteVnetID: devvnet.outputs.vnetID
   }
 }
@@ -141,7 +138,6 @@ module devtohubpeering './modules/vnet-peering.bicep' = {
   params:{
     localVnetName: devvnet.name
     remoteVnetName: hubvnet.name
-    remoteVnetRg: hubrg.name
     remoteVnetID: hubvnet.outputs.hubVnetId
   }
 }
