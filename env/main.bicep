@@ -176,3 +176,33 @@ module akscluster './modules/aks-cluster.bicep' = {
     nodeResourceGroup: '${clusterName}-nodes-rg' 
   }
 }
+
+// Link the private DNS zone of AKS to hub & dev vnets
+module privatednshublink './modules/private-dns-vnet-link.bicep' = {
+  name: 'link-to-hub-vnet'
+  dependsOn: [
+    akscluster
+  ]
+  scope: resourceGroup('${clusterName}-nodes-rg')
+  params: {
+    location: location
+    privatednszonename: akscluster.outputs.apiServerAddress
+    registrationEnabled: false
+    vnetID: hubvnet.outputs.hubVnetId
+    vnetName: hubvnet.name
+  }
+} 
+module privatednsdevlink './modules/private-dns-vnet-link.bicep' = {
+  name: 'link-to-dev-vnet'
+  dependsOn: [
+    akscluster
+  ]
+  scope: resourceGroup('${clusterName}-nodes-rg')
+  params: {
+    location: location
+    privatednszonename: akscluster.outputs.apiServerAddress
+    registrationEnabled: false
+    vnetID: devvnet.outputs.vnetID
+    vnetName: devvnet.name
+  }
+}
