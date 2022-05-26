@@ -206,3 +206,18 @@ module privatednsdevlink './modules/private-dns-vnet-link.bicep' = {
     vnetName: devvnet.name
   }
 }
+
+
+// Create a jumpbox VM, ubuntu OS with docker
+// module agentvm './modules/ubuntu-docker.bicep' = {
+//   name: '${prefix}-vm'
+//   scope: resourceGroup(devrg.name)
+//   params: {
+//     vmName: '${prefix}-vm'
+//     location: location
+//     adminUsername: 'adminuser'
+//     adminPasswordOrKey: adminPasswordOrKey
+//     subnetID: devvnet.outputs.subnet[0].subnetID
+//     authenticationType: 'password'
+//   }
+// }
