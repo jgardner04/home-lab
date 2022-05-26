@@ -1,6 +1,6 @@
 param location string
 param tags object
-param hubVnetName string
+param hubVnetName string = 'hub-vnet'
 param hubVnetPrefix string = '192.168.100.0/24'
 param hubFwName string = 'hub-fw'
 param FirewallSubnetPrefix string = '192.168.100.0/26'

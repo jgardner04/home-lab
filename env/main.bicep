@@ -35,7 +35,6 @@ module hubvnet './modules/hub-default.bicep' = {
   scope: resourceGroup(hubrg.name)
   params: {
     location: location
-    hubVnetName: '${basename}-hub-vnet'
     hubFwName: 'hub-fw'
     tags: tags
   }
