@@ -23,8 +23,9 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           scope: subscription
+          region: ${{ secrets.LOCATION }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           template: ./env/main.bicep
-          parameters: location={{ secrets.LOCATION }} localAddressPrefixes=${{ secrets.LOCAL_ADDRESS_PREFIX }} localGatewayIpAddress=${{ secrets.LOCAL_GATEWAY_IP }} vpnPreSharedKey=${{ secrets.VPN_KEY }}
+          parameters: location=${{ secrets.LOCATION }} localAddressPrefixes=${{ secrets.LOCAL_ADDRESS_PREFIX }} localGatewayIpAddress=${{ secrets.LOCAL_GATEWAY_IP }} vpnPreSharedKey=${{ secrets.VPN_KEY }}
           failOnStdErr: false
     

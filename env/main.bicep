@@ -87,6 +87,65 @@ module devvnet './modules/vnet.bicep' = {
   }
 }
 
+// Peer hub with aks vnets
+module hubtoakspeering './modules/vnet-peering.bicep' = {
+  name: 'hub-to-aks'
+  scope: resourceGroup(hubrg.name)
+  dependsOn: [
+    hubvnet
+    aksvnet    
+  ]
+  params:{
+    localVnetName: hubvnet.name
+    remoteVnetName: aksvnet.name
+    remoteVnetRg: aksrg.name
+    remoteVnetID: aksvnet.outputs.vnetID
+  }
+}
+module akstohubpeering './modules/vnet-peering.bicep' = {
+  name: 'aks-to-hub'
+  scope: resourceGroup(aksrg.name)
+  dependsOn: [
+    hubvnet
+    aksvnet    
+  ]
+  params:{
+    localVnetName: aksvnet.name
+    remoteVnetName: hubvnet.name
+    remoteVnetRg: hubrg.name
+    remoteVnetID: hubvnet.outputs.hubVnetId
+  }
+}
+// Peer hub with dev vnets
+module hubtodevpeering './modules/vnet-peering.bicep' = {
+  name: 'hub-to-dev'
+  scope: resourceGroup(hubrg.name)
+  dependsOn: [
+    hubvnet
+    devvnet    
+  ]
+  params:{
+    localVnetName: hubvnet.name
+    remoteVnetName: devvnet.name
+    remoteVnetRg: devrg.name
+    remoteVnetID: devvnet.outputs.vnetID
+  }
+}
+module devtohubpeering './modules/vnet-peering.bicep' = {
+  name: 'dev-to-hub'
+  scope: resourceGroup(devrg.name)
+  dependsOn: [
+    hubvnet
+    devvnet    
+  ]
+  params:{
+    localVnetName: devvnet.name
+    remoteVnetName: hubvnet.name
+    remoteVnetRg: hubrg.name
+    remoteVnetID: hubvnet.outputs.hubVnetId
+  }
+}
+
 // Create & assign the route tables
 module aksroutetable './modules/routetable.bicep'={
   name: 'aks-rt'
