@@ -55,7 +55,7 @@ module aksvnet './modules/vnet.bicep' = {
       }
       {
         name: 'ingress-subnet'
-        subnetPrefix: '192.168.160.0/24'
+        subnetPrefix: '192.168.144.0/24'
         routeTableid: ''
       }
     ]
