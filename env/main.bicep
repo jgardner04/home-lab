@@ -4,7 +4,7 @@ param location string
 // param localAddressPrefixes string
 // param localGatewayIpAddress string
 // param vpnPreSharedKey string
-
+param clusterName string = 'aks-cl01'
 var basename = 'home-lab'
 var owner = 'jogardn'
 var tags = {
@@ -161,5 +161,18 @@ module devroutetable './modules/routetable.bicep'={
     udrName: 'dev-rt'
     udrRouteName: 'Default-route'
     nextHopIpAddress: hubvnet.outputs.hubFwPrivateIPAddress
+  }
+}
+
+// Create the AKS Cluster
+module akscluster './modules/aks-cluster.bicep' = {
+  name: clusterName
+  scope: resourceGroup(aksrg.name)
+  params: {
+    location: location
+    tags: tags
+    clusterName: clusterName
+    subnetID: aksvnet.outputs.subnet[0].subnetID
+    nodeResourceGroup: '${clusterName}-nodes-rg' 
   }
 }
