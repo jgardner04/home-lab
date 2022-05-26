@@ -1,0 +1,17 @@
+{
+  "analyzers": {
+    "core": {
+      "verbose": false,
+      "enabled": true,
+      "rules": {
+        "no-hardcoded-env-urls": {
+          "level": "warning",
+          "disallowedhosts": [],
+          "excludedhosts": [
+            "schema.management.azure.com"
+          ]
+        }
+      }
+    }
+  }
+}
