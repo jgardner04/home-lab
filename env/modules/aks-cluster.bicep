@@ -19,7 +19,7 @@ param nodeVMSize string = 'Standard_D2s_v3'
 param subnetID string
 
 // The Kubernetes version
-param kubeVersion string = '1.19.7'
+param kubeVersion string = '1.22.6'
 
 // The nodes resource group name
 param nodeResourceGroup string = '${dnsPrefix}-${clusterName}-rg'
