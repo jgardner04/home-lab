@@ -184,7 +184,6 @@ module privatednshublink './modules/private-dns-vnet-link.bicep' = {
   ]
   scope: resourceGroup('${clusterName}-nodes-rg')
   params: {
-    location: location
     privatednszonename: akscluster.outputs.apiServerAddress
     registrationEnabled: false
     vnetID: hubvnet.outputs.hubVnetId
@@ -198,7 +197,6 @@ module privatednsdevlink './modules/private-dns-vnet-link.bicep' = {
   ]
   scope: resourceGroup('${clusterName}-nodes-rg')
   params: {
-    location: location
     privatednszonename: akscluster.outputs.apiServerAddress
     registrationEnabled: false
     vnetID: devvnet.outputs.vnetID
