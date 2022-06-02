@@ -1,7 +1,6 @@
 // The name of the private DNS Zone
 param privatednszonename string
 
-param location string
 param vnetName string = 'vnet-name'
 param vnetID string
 param registrationEnabled bool = false
@@ -10,7 +9,7 @@ var privatednsfqdn = substring(privatednszonename, indexOf(privatednszonename, '
 
 resource privatednsvnetlink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   name: '${privatednsfqdn}/link-to-${vnetName}'
-  location: location
+  location: 'global'
   tags: {}
   properties: {
     virtualNetwork: {

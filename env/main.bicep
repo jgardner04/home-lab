@@ -46,16 +46,16 @@ module aksvnet './modules/vnet.bicep' = {
   params: {
     vnetName: 'aks-vnet'
     location: location
-    vnetPrefix: '192.168.140.0/22'
+    vnetPrefix: '192.168.144.0/22'
     subnets: [
       {
         name: 'nodes-subnet'
-        subnetPrefix: '192.168.140.0/23'
+        subnetPrefix: '192.168.144.0/23'
         routeTableid: aksroutetable.outputs.routeTableid
       }
       {
         name: 'ingress-subnet'
-        subnetPrefix: '192.168.144.0/24'
+        subnetPrefix: '192.168.146.0/24'
         routeTableid: ''
       }
     ]
