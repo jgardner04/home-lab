@@ -272,6 +272,14 @@ resource hubVnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
         name: 'GatewaySubnet'
         properties: {
           addressPrefix: gatewaySubnetPrefix
+          serviceEndpoints: [
+            {
+              locations: [
+                location
+              ]
+              service: 'Microsoft.ContainerRegistry'
+            }
+          ]
         }
       }
       {
