@@ -305,17 +305,16 @@ resource hubVnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
   }
 }
 
-resource vpnGatewayPip 'Microsoft.Network/publicIpAddresses@2020-05-01' = {
-  name: 'vpn-gateway-pip'
+resource vpnGatewayPip 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
+  name: 'gatewayPip'
   location: location
   tags: tags
   sku: {
-    name: 'Standard'
+    name: 'Basic'
+    tier: 'Regional'
   }
   properties: {
-    publicIPAllocationMethod: 'Static'
-    idleTimeoutInMinutes: 4
-    publicIPAddressVersion: 'IPv4'
+    publicIPAllocationMethod: 'Dynamic'
   }
 }
 
