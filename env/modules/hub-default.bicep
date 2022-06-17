@@ -9,6 +9,9 @@ param mgmtSubnetPrefix string = '192.168.100.64/26'
 param bastionSubnetPrefix string = '192.168.100.192/27'
 param gatewaySubnetPrefix string = '192.168.100.224/27'
 param bastionHostName string = 'hub-bastion'
+param localAddressPrefixes string
+param localGatewayIpAddress string
+param vpnPreSharedKey string
 
 var FwPipName = '${hubFwName}-pip'
 var bastionSubnetNsgName = 'bastion-nsg'
@@ -263,13 +266,8 @@ resource hubVnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
     }
     subnets: [
       {
-        name: 'AzureFirewallSubnet'
-        properties: {
-          addressPrefix: FirewallSubnetPrefix
-        }
-      }
-      {
         name: 'GatewaySubnet'
+        id: 'gatewaySubnet'
         properties: {
           addressPrefix: gatewaySubnetPrefix
           serviceEndpoints: [
@@ -280,6 +278,12 @@ resource hubVnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
               service: 'Microsoft.ContainerRegistry'
             }
           ]
+        }
+      }
+      {
+        name: 'AzureFirewallSubnet'
+        properties: {
+          addressPrefix: FirewallSubnetPrefix
         }
       }
       {
@@ -298,6 +302,89 @@ resource hubVnet 'Microsoft.Network/virtualNetworks@2020-05-01' = {
         }
       }
     ]
+  }
+}
+
+resource vpnGatewayPip 'Microsoft.Network/publicIpAddresses@2020-05-01' = {
+  name: 'vpn-gateway-pip'
+  location: location
+  tags: tags
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    publicIPAllocationMethod: 'Static'
+    idleTimeoutInMinutes: 4
+    publicIPAddressVersion: 'IPv4'
+  }
+}
+
+resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
+  name: '${hubVnetName}-local-gateway'
+  location: location
+  tags: tags
+  properties: {
+    localNetworkAddressSpace: {
+      addressPrefixes: [
+        '${localAddressPrefixes}'
+      ]
+    }
+    gatewayIpAddress: localGatewayIpAddress
+  }
+}
+
+resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+  name: '${hubVnetName}-vpn-gateway'
+  location: location
+  tags: tags
+  properties: {
+    activeActive: false
+    ipConfigurations: [
+      {
+        id: 'vpnGateway'
+        name: 'vpnGateway'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          publicIPAddress: {
+            id: vpnGatewayPip.id
+          }
+          subnet: {
+            id: hubVnet.properties.subnets[0].id
+          }
+        }
+      }
+    ]
+    sku: {
+      name: 'VpnGw2'
+      tier: 'VpnGw2'
+    }
+    gatewayType: 'Vpn'
+    vpnType: 'RouteBased'
+    enableBgp: false
+  }
+}
+
+resource vpnConnection 'Microsoft.Network/connections@2021-05-01' = {
+  name: '${hubVnetName}-home-connection'
+  location: location
+  properties: {
+    connectionType: 'IPsec'
+    connectionProtocol: 'IKEv2'
+    routingWeight: 0
+    sharedKey: vpnPreSharedKey
+    enableBgp: false
+    localNetworkGateway2: {
+      id: localGateway.id
+      properties: {
+
+      }
+    }
+    virtualNetworkGateway1: {
+      id: vpnGateway.id
+      properties: {}
+    }
+    connectionMode: 'Default'
+    dpdTimeoutSeconds: 0
   }
 }
 

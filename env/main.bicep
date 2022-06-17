@@ -1,9 +1,9 @@
 targetScope = 'subscription'
 
 param location string
-// param localAddressPrefixes string
-// param localGatewayIpAddress string
-// param vpnPreSharedKey string
+param localAddressPrefixes string
+param localGatewayIpAddress string
+param vpnPreSharedKey string
 param clusterName string = 'aks-cl01'
 var basename = 'home-lab'
 var owner = 'jogardn'
@@ -37,6 +37,9 @@ module hubvnet './modules/hub-default.bicep' = {
     location: location
     hubFwName: 'hub-fw'
     tags: tags
+    localAddressPrefixes: localAddressPrefixes
+    localGatewayIpAddress: localGatewayIpAddress
+    vpnPreSharedKey: vpnPreSharedKey
   }
 }
 
@@ -59,7 +62,6 @@ module aksvnet './modules/vnet.bicep' = {
         routeTableid: ''
       }
     ]
-
   }
 }
 
