@@ -333,7 +333,7 @@ resource localGateway 'Microsoft.Network/localNetworkGateways@2021-05-01' = {
   }
 }
 
-resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
+resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
   name: '${hubVnetName}-vpn-gateway'
   location: location
   tags: tags
@@ -439,7 +439,7 @@ resource hubFw 'Microsoft.Network/azureFirewalls@2020-05-01' = {
         name: hubFwPip.name
         properties: {
           subnet: {
-            id: hubVnet.properties.subnets[0].id
+            id: hubVnet.properties.subnets[1].id
           }
           publicIPAddress: {
             id: hubFwPip.id
