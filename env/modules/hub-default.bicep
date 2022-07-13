@@ -12,7 +12,7 @@ param bastionHostName string = 'hub-bastion'
 param localAddressPrefixes string
 param localGatewayIpAddress string
 param vpnPreSharedKey string
-param acrName string = 'acr'
+param acrName string = 'jogardnacr'
 
 var FwPipName = '${hubFwName}-pip'
 var bastionSubnetNsgName = 'bastion-nsg'
