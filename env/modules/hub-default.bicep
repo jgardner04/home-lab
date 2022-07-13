@@ -226,6 +226,9 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
   sku: {
     name: 'Premium'
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     adminUserEnabled: false
   }
