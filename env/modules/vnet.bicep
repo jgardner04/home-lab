@@ -55,3 +55,4 @@ output subnet array = [for (subnet,i) in subnets:{
   name: vnet.properties.subnets[i].name
   subnetID: vnet.properties.subnets[i].id
 }]
+output vnetName string = vnet.name

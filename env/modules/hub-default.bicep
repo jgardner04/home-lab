@@ -849,3 +849,4 @@ resource hubFw_diagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-prev
 
 output hubVnetId string = hubVnet.id
 output hubFwPrivateIPAddress string = hubFw.properties.ipConfigurations[0].properties.privateIPAddress
+output acrId string = acr.id 

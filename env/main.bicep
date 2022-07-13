@@ -61,7 +61,59 @@ module aksvnet './modules/vnet.bicep' = {
         subnetPrefix: '192.168.146.0/24'
         routeTableid: ''
       }
+      {
+        name: 'acr'
+        subnetPrefix: '192.168.147.0/24'
+        routeTableid: ''
+      }
     ]
+  }
+}
+
+resource subnetAcrPrivate 'Microsoft.Network/virtualNetworks/subnets@2022-01-01' existing = {
+  scope: resourceGroup(aksrg.name)
+  name: '${aksvnet.name}/acr'
+}
+
+module acrPrivateEndpoint 'modules/vnet/privateendpoint.bicep' = {
+  scope: resourceGroup(aksrg.name)
+  name: 'acrPrivateEndpoint'
+  params: {
+    privateEndpointName: 'acrPrivateEndpoint'
+    location: location
+    privateLinkServiceConnections: [
+      {
+        name: 'acrPrivateEndpointConnection'
+        properties: {
+          privateLinkServiceId: hubvnet.outputs.acrId
+          groupIds: [
+            'registry'
+          ]
+        }
+      }
+    ]
+    subnetid: {
+      id: subnetAcrPrivate.id
+    }
+  }
+}
+
+module privateDnsAcrZone 'modules/vnet/privatednszone.bicep' = {
+  scope: resourceGroup(aksrg.name)
+  name: 'privateDnsAcrZone'
+  params: {
+    privateDNSZoneName: 'privateDnsAcrZone'
+  }
+}
+
+module privateDns 'modules/vnet/privatedns.bicep' = {
+  scope: resourceGroup(aksrg.name)
+  name: 'privateDns'
+  params: {
+    privateDNSZoneName: privateDnsAcrZone.outputs.privateDNSZoneName
+    privateEndpointName: acrPrivateEndpoint.outputs.privateEndpointName
+    virtualNetworkid: aksvnet.outputs.vnetID
+    privateDNSZoneId: privateDnsAcrZone.outputs.privateDNSZoneId
   }
 }
 
