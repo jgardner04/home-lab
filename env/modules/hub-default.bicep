@@ -12,6 +12,7 @@ param bastionHostName string = 'hub-bastion'
 param localAddressPrefixes string
 param localGatewayIpAddress string
 param vpnPreSharedKey string
+param acrName string = 'acr'
 
 var FwPipName = '${hubFwName}-pip'
 var bastionSubnetNsgName = 'bastion-nsg'
@@ -218,6 +219,17 @@ resource bastionNetworkNsg_diagnostic 'Microsoft.Insights/diagnosticSettings@202
   }
 }
 
+resource acr 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
+  name: acrName
+  location: location
+  tags: tags
+  sku: {
+    name: 'Premium'
+  }
+  properties: {
+    adminUserEnabled: false
+  }
+}
 
 resource bastionHostPip 'Microsoft.Network/publicIpAddresses@2020-05-01' = {
   name: '${bastionHostName}-pip'
