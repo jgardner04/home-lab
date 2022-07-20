@@ -72,18 +72,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
         enableAutoScaling: false
         vnetSubnetID: subnetID
       }
-      {
-        name: 'windowspool'
-        count: 1
-        mode: 'System'
-        vmSize: 'Standard_DS3_v2'
-        type: 'VirtualMachineScaleSets'
-        osType: 'Windows'
-        enableAutoScaling: false
-        vnetSubnetID: subnetID
-        osDiskType: 'Ephemeral'
-      }
-
     ]
     apiServerAccessProfile:{
       enablePrivateCluster:true
@@ -105,6 +93,25 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
       }
     }
   }
+}
+
+module windowsPool './aks/agent-pool.bicep' = {
+  name: 'windowspool'
+  params: {
+    poolName: 'windowspool'
+    parentName: aks.name
+    properties: {
+      name: 'windowspool'
+      count: 1
+      mode: 'System'
+      vmSize: 'Standard_DS3_v3'
+      type: 'VirtualMachineScaleSets'
+      osType: 'Windows'
+      enableAutoScaling: false
+      vnetSubnetID: subnetID
+    }
+  }
+
 }
 
 output aksid string = aks.id
