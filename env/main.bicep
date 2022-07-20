@@ -100,16 +100,16 @@ module acrPrivateEndpoint 'modules/vnet/privateendpoint.bicep' = {
 }
 
 
-module privateDns 'modules/vnet/privatedns.bicep' = {
-  scope: resourceGroup(aksrg.name)
-  name: 'privateDns'
-  params: {
-    privateDNSZoneName: privateDnsAcrZone.outputs.privateDNSZoneName
-    privateEndpointName: acrPrivateEndpoint.outputs.privateEndpointName
-    virtualNetworkid: aksvnet.outputs.vnetID
-    privateDNSZoneId: privateDnsAcrZone.outputs.privateDNSZoneId
-  }
-}
+// module privateDns 'modules/vnet/privatedns.bicep' = {
+//   scope: resourceGroup(aksrg.name)
+//   name: 'privateDns'
+//   params: {
+//     privateDNSZoneName: privateDnsAcrZone.outputs.privateDNSZoneName
+//     privateEndpointName: acrPrivateEndpoint.outputs.privateEndpointName
+//     virtualNetworkid: aksvnet.outputs.vnetID
+//     privateDNSZoneId: privateDnsAcrZone.outputs.privateDNSZoneId
+//   }
+// }
 
 module devvnet './modules/vnet.bicep' = {
   name: 'dev-vnet'
