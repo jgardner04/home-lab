@@ -72,6 +72,16 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
         enableAutoScaling: false
         vnetSubnetID: subnetID
       }
+      {
+        name: 'windowspool'
+        count: 1
+        mode: 'System'
+        vmSize: nodeVMSize
+        type: 'VirtualMachineScaleSets'
+        osType: 'Windows'
+        enableAutoScaling: false
+        vnetSubnetID: subnetID
+      }
 
     ]
     apiServerAccessProfile:{
