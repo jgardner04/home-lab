@@ -50,6 +50,7 @@ module aksvnet './modules/vnet.bicep' = {
     vnetName: 'aks-vnet'
     location: location
     vnetPrefix: '192.168.144.0/22'
+    tags: tags
     subnets: [
       {
         name: 'nodes-subnet'
@@ -98,13 +99,6 @@ module acrPrivateEndpoint 'modules/vnet/privateendpoint.bicep' = {
   }
 }
 
-module privateDnsAcrZone 'modules/vnet/privatednszone.bicep' = {
-  scope: resourceGroup(aksrg.name)
-  name: 'privateDnsAcrZone'
-  params: {
-    privateDNSZoneName: 'privateDnsAcrZone'
-  }
-}
 
 module privateDns 'modules/vnet/privatedns.bicep' = {
   scope: resourceGroup(aksrg.name)
@@ -122,6 +116,7 @@ module devvnet './modules/vnet.bicep' = {
   scope: resourceGroup(devrg.name)
   params: {
     location: location
+    tags: tags
     vnetName: 'dev-vnet'
     vnetPrefix: '192.168.120.0/24'
     subnets: [

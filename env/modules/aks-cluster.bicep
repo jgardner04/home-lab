@@ -110,7 +110,6 @@ module windowsPool './aks/agent-pool.bicep' = {
       enableAutoScaling: false
     }
   }
-
 }
 
 output aksid string = aks.id
