@@ -76,11 +76,12 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
         name: 'windowspool'
         count: 1
         mode: 'System'
-        vmSize: nodeVMSize
+        vmSize: 'Standard_DS3_v2'
         type: 'VirtualMachineScaleSets'
         osType: 'Windows'
         enableAutoScaling: false
         vnetSubnetID: subnetID
+        osDiskType: 'Ephemeral'
       }
 
     ]
