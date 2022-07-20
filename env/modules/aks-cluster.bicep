@@ -108,7 +108,6 @@ module windowsPool './aks/agent-pool.bicep' = {
       type: 'VirtualMachineScaleSets'
       osType: 'Windows'
       enableAutoScaling: false
-      vnetSubnetID: subnetID
     }
   }
 
