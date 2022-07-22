@@ -46,10 +46,6 @@ resource aks_workspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   }
 }
 
-resource aksSubnet 'Microsoft.Network/virtualNetworks/subnets@2015-05-01-preview' existing = {
-  name: 'aks-vnet/nodes-subnet'
-}
-
 // Create the Azure kubernetes service cluster
 resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
   name: clusterName
@@ -71,7 +67,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
         type: 'VirtualMachineScaleSets'
         osType: 'Linux'
         enableAutoScaling: false
-        vnetSubnetID: aksSubnet.id
+        vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets', 'aks-vnet', 'nodes-subnet')
       }
     ]
     apiServerAccessProfile:{
@@ -111,7 +107,7 @@ module windowsPool './aks/agent-pool.bicep' = {
       osDiskSizeGB: '128'
       osDiskType: 'Ephemral'
       workloadRuntime: 'OCIContainer'
-      vnetSubnetID: aksSubnet.id
+      vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets', 'aks-vnet', 'nodes-subnet')
       enableAutoScaling: false
     }
   }
