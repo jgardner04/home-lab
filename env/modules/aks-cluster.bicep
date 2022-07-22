@@ -13,7 +13,7 @@ param location string
 param nodeCount int = 1
 
 // description('The size of the Virtual Machine.')
-param nodeVMSize string = 'Standard_DS3_v2'
+param nodeVMSize string = 'Standard_D8S_v3'
 
 // The Kubernetes version
 param kubeVersion string = '1.22.6'
@@ -68,6 +68,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
         osType: 'Linux'
         enableAutoScaling: false
         vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets', 'aks-vnet', 'nodes-subnet')
+        osDiskType: 'Ephemeral'
       }
     ]
     apiServerAccessProfile:{
