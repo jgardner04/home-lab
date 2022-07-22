@@ -13,7 +13,7 @@ param location string
 param nodeCount int = 1
 
 // description('The size of the Virtual Machine.')
-param nodeVMSize string = 'Standard_DS3_v3'
+param nodeVMSize string = 'Standard_DS3_v2'
 
 // The Kubernetes version
 param kubeVersion string = '1.22.6'
