@@ -13,7 +13,7 @@ param location string
 param nodeCount int = 1
 
 // description('The size of the Virtual Machine.')
-param nodeVMSize string = 'Standard_D2s_v3'
+param nodeVMSize string = 'Standard_DS3_v3'
 
 // The Kubernetes version
 param kubeVersion string = '1.22.6'
@@ -101,7 +101,7 @@ module windowsPool './aks/agent-pool.bicep' = {
       name: 'windowspool'
       count: 1
       mode: 'User'
-      vmSize: 'Standard_DS3_v3'
+      vmSize: nodeVMSize
       type: 'VirtualMachineScaleSets'
       osType: 'Windows'
       osDiskSizeGB: '128'
