@@ -15,9 +15,6 @@ param nodeCount int = 1
 // description('The size of the Virtual Machine.')
 param nodeVMSize string = 'Standard_D2s_v3'
 
-// The nodes' subnet ID
-param subnetID string
-
 // The Kubernetes version
 param kubeVersion string = '1.22.6'
 
@@ -49,6 +46,10 @@ resource aks_workspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   }
 }
 
+resource aksSubnet 'Microsoft.Network/virtualNetworks/subnets@2015-05-01-preview' existing = {
+  name: 'aks-vnet/nodes-subnet'
+}
+
 // Create the Azure kubernetes service cluster
 resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
   name: clusterName
@@ -70,7 +71,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
         type: 'VirtualMachineScaleSets'
         osType: 'Linux'
         enableAutoScaling: false
-        vnetSubnetID: subnetID
+        vnetSubnetID: aksSubnet.id
       }
     ]
     apiServerAccessProfile:{
@@ -110,7 +111,7 @@ module windowsPool './aks/agent-pool.bicep' = {
       osDiskSizeGB: '128'
       osDiskType: 'Ephemral'
       workloadRuntime: 'OCIContainer'
-      vnetSubnetID: subnetID
+      vnetSubnetID: aksSubnet.id
       enableAutoScaling: false
     }
   }

@@ -220,7 +220,6 @@ module akscluster './modules/aks-cluster.bicep' = {
     location: location
     tags: tags
     clusterName: clusterName
-    subnetID: aksvnet.outputs.subnet[0].subnetID
     nodeResourceGroup: '${clusterName}-nodes-rg' 
   }
 }
