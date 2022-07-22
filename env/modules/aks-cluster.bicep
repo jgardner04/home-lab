@@ -104,7 +104,7 @@ module windowsPool './aks/agent-pool.bicep' = {
       vmSize: nodeVMSize
       type: 'VirtualMachineScaleSets'
       osType: 'Windows'
-      osDiskSizeGB: '128'
+      osDiskSizeGB: 128
       osDiskType: 'Ephemral'
       workloadRuntime: 'OCIContainer'
       vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets', 'aks-vnet', 'nodes-subnet')
