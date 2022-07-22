@@ -94,6 +94,28 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
     }
   }
 }
+
+module windowsPool './aks/agent-pool.bicep' = {
+  name: 'win'
+  params: {
+    poolName: 'win'
+    parentName: aks.name
+    properties: {
+      name: 'windowspool'
+      count: 1
+      mode: 'User'
+      vmSize: 'Standard_DS3_v3'
+      type: 'VirtualMachineScaleSets'
+      osType: 'Windows'
+      osDiskSizeGB: '128'
+      osDiskType: 'Ephemral'
+      workloadRuntime: 'OCIContainer'
+      vnetSubnetID: subnetID
+      enableAutoScaling: false
+    }
+  }
+}
+
 output aksid string = aks.id
 output apiServerAddress string = aks.properties.privateFQDN
 output aksnodesrg string = aks.properties.nodeResourceGroup
