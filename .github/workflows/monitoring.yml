@@ -3,7 +3,7 @@ name: Monitoring
 on:
   workflow_run:
     workflows:
-      - "Infrastructure"
+      - "build-and-deploy"
     branches:
       - 'main'
 
