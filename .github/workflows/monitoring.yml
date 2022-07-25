@@ -13,3 +13,27 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v1
+
+      # Log into Azure
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      # Setup kubectl
+      - uses: azure/setup-kubectl@v2.0
+
+      # Setup Helm
+      - uses: azure/setup-helm@v3
+      
+      # Set AKS Context
+      - uses: azure/aks-set-context@v2.0
+        with:
+          resource-group: ${{ secrets.AKS_RG }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+      
+      # Deploy Grafana
+      - name: Deploy Grafana
+        run: |
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm upgrade
+          helm install grafana grafana/grafana
