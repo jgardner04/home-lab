@@ -7,6 +7,11 @@ on:
       - completed
     branches:
       - 'main'
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'kubernetes/**'
 
 jobs:
   deployment:
@@ -35,5 +40,5 @@ jobs:
       - name: Deploy Grafana
         run: |
           helm repo add grafana https://grafana.github.io/helm-charts
-          helm upgrade
-          helm install grafana grafana/grafana
+          helm update
+          helm upgrade --install grafana grafana/grafana --namespace=monitoring
