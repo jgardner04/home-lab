@@ -22,8 +22,6 @@ param kubeVersion string = '1.22.6'
 param nodeResourceGroup string = '${dnsPrefix}-${clusterName}-rg'
 
 param tags object = {
-  environment: 'production'
-  projectCode: 'xyz'
 }
 
 // vars

@@ -1,6 +1,11 @@
 # .github/workflows/monitoring.yml
 name: Monitoring
-on: ['deployment']
+on:
+  workflow_run:
+    workflows:
+      - "Infrastructure"
+    branches:
+      - 'main'
 
 jobs:
   deployment:
