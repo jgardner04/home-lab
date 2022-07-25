@@ -2,8 +2,7 @@
 name: Monitoring
 on:
   workflow_run:
-    workflows:
-      - "Infrastructure Deployment"
+    workflows: ["Infrastructure Deployment"]
     types:
       - completed
     branches:
