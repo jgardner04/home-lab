@@ -7,6 +7,10 @@ param vpnPreSharedKey string
 param clusterName string = 'aks-cl01'
 var basename = 'home-lab'
 var owner = 'jogardn'
+@secure()
+param adminUsername string
+@secure()
+param adminPassword string
 var tags = {
   owner: owner
   purpose: 'home-lab'
@@ -252,6 +256,22 @@ module privatednsdevlink './modules/private-dns-vnet-link.bicep' = {
   }
 }
 
+// Create Dev VM
+module devVM './modules/devbox/devbox.bicep' = {
+  name: 'devVm'
+  dependsOn: [
+    devvnet
+    devroutetable
+  ]
+  scope: resourceGroup(devrg.name)
+  params: {
+    location: location
+    devRgName: devrg.name
+    adminUsername: adminUsername
+    adminPassword: adminPassword
+    tags: tags
+  }
+}
 
 // Create a jumpbox VM, ubuntu OS with docker
 // module agentvm './modules/ubuntu-docker.bicep' = {
