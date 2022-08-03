@@ -13,6 +13,7 @@ param localAddressPrefixes string
 param localGatewayIpAddress string
 param vpnPreSharedKey string
 param acrName string = 'jogardnacr'
+param kvName string = 'jogardn-kv'
 
 var FwPipName = '${hubFwName}-pip'
 var bastionSubnetNsgName = 'bastion-nsg'
@@ -843,6 +844,27 @@ resource hubFw_diagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-prev
         enabled: true
       }
     ]
+  }
+}
+
+resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
+  name: kvName
+  location: location
+  properties: {
+    accessPolicies: []
+    enableRbacAuthorization: true
+    enabledForDeployment: true
+    enabledForDiskEncryption: true
+    enabledForTemplateDeployment: true
+    tenantId: subscription().tenantId
+    sku: {
+      name: 'standard'
+      family: 'A'
+    }
+    networkAcls: {
+      defaultAction: 'Allow'
+      bypass: 'AzureServices'
+    }
   }
 }
 
