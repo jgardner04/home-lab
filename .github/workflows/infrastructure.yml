@@ -9,7 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-
+     
       # Checkout code
       - uses: actions/checkout@main
 
@@ -20,6 +20,8 @@ jobs:
       
       # Deploy Bicep files
       - name: deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: azure/arm-deploy@v1
         with:
           scope: subscription
