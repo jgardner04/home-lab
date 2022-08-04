@@ -27,7 +27,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: '${devSubnet.id}/subnets/default'
+            id: devSubnet.id
           }
         }
       }
