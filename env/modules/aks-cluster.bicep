@@ -105,6 +105,26 @@ module windowsPool './aks/agent-pool.bicep' = {
       osType: 'Windows'
       osDiskSizeGB: 128
       osDiskType: 'Ephemral'
+      vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets', 'aks-vnet', 'nodes-subnet')
+      enableAutoScaling: false
+    }
+  }
+}
+
+module linuxPool './aks/agent-pool.bicep' = {
+  name: 'linux'
+  params: {
+    poolName: 'linux'
+    parentName: aks.name
+    properties: {
+      name: 'linuxpool'
+      count: 1
+      mode: 'User'
+      vmSize: nodeVMSize
+      type: 'VirtualMachineScaleSets'
+      osType: 'Linux'
+      osDiskSizeGB: 128
+      osDiskType: 'Ephemral'
       workloadRuntime: 'OCIContainer'
       vnetSubnetID: resourceId('Microsoft.Network/virtualNetworks/subnets', 'aks-vnet', 'nodes-subnet')
       enableAutoScaling: false
