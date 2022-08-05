@@ -36,9 +36,21 @@ jobs:
           resource-group: ${{ secrets.AKS_RG }}
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
       
+      # AKS supporting files
+      - uses: azure/k8s-deploy@v4
+        with:
+          resource-group: ${{ secrets.AKS_RG }}
+          name: ${{ secrets.AKS_CLUSTER_NAME }}
+          action: deploy
+          strategy: basic
+
+          private-cluster: true
+          manifests: |
+            kubernetes/grafana-plugins-pvc.yaml
+      
       # Deploy Grafana
       - name: Deploy Grafana
         run: |
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo update grafana
-          helm upgrade --install grafana grafana/grafana --namespace=monitoring
+          helm upgrade --install grafana grafana/grafana --namespace=monitoring -f 'kubernetes/grafana/values.yaml
