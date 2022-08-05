@@ -25,13 +25,13 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       # Setup kubectl
-      - uses: azure/setup-kubectl@v2.0
+      - uses: azure/setup-kubectl@v3
 
       # Setup Helm
       - uses: azure/setup-helm@v3
       
       # Set AKS Context
-      - uses: azure/aks-set-context@v2.0
+      - uses: azure/aks-set-context@v3
         with:
           resource-group: ${{ secrets.AKS_RG }}
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
@@ -49,9 +49,9 @@ jobs:
             kubernetes/monitoring-namespace.yaml
             kubernetes/grafana-plugins-pvc.yaml
       
-      # Deploy Grafana
-      - name: Deploy Grafana
-        run: |
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo update grafana
-          helm upgrade --install grafana grafana/grafana --namespace=monitoring -f 'kubernetes/grafana/values.yaml
+      # # Deploy Grafana
+      # - name: Deploy Grafana
+      #   run: |
+      #     helm repo add grafana https://grafana.github.io/helm-charts
+      #     helm repo update grafana
+      #     helm upgrade --install grafana grafana/grafana --namespace=monitoring -f 'kubernetes/grafana/values.yaml
