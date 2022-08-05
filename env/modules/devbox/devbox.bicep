@@ -211,6 +211,9 @@ module vmAccessPolicy '../keyvault/access-policy.bicep' = {
 
 resource diskEncryption 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
   parent: virtualMachine
+  dependsOn: [
+    vmAccessPolicy
+  ]
   name: 'diskEncryption'
   location: location
   properties: {
