@@ -46,6 +46,7 @@ jobs:
 
           private-cluster: true
           manifests: |
+            kubernetes/monitoring-namespace.yaml
             kubernetes/grafana-plugins-pvc.yaml
       
       # Deploy Grafana
