@@ -183,29 +183,29 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   scope: resourceGroup(devResourceGroup.name)
 }
 
-resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
-  name: '${kvName}/vm-deployment'
-  properties: {
-    accessPolicies: [
-      {
-        tenantId: tenant().tenantId
-        objectId: virtualMachine.identity.principalId
-        permissions: {
-          keys: [
-            'list'
-            'get'
-            'decrypt'
-            'encrypt'
-            'unwrapKey'
-            'wrapKey'
-          ]
-          secrets: [
-            'list'
-            'get'
-          ]
-        }
+module vmAccessPolicy '../keyvault/access-policy.bicep' = {
+  name: 'vm-deployment'
+  params: {
+    kvName: keyVault.name
+    policyName: 'vm-deployment'
+    accessPolicy: {
+      tenantId: tenant().tenantId
+      objectId: virtualMachine.identity.principalId
+      permissions: {
+        keys: [
+          'list'
+          'get'
+          'decrypt'
+          'encrypt'
+          'unwrapKey'
+          'wrapKey'
+        ]
+        secrets: [
+          'list'
+          'get'
+        ]
       }
-    ]
+    }
   }
 }
 
