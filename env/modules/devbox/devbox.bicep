@@ -7,36 +7,7 @@ param adminUsername string
 param adminPassword string
 param tags object
 param kvName string = 'jogardn-kv'
-
-@description('MAA Endpoint to attest to.')
-@allowed([
-  'https://sharedcus.cus.attest.azure.net/'
-  'https://sharedcae.cae.attest.azure.net/'
-  'https://sharedeus2.eus2.attest.azure.net/'
-  'https://shareduks.uks.attest.azure.net/'
-  'https://sharedcac.cac.attest.azure.net/'
-  'https://sharedukw.ukw.attest.azure.net/'
-  'https://sharedneu.neu.attest.azure.net/'
-  'https://sharedeus.eus.attest.azure.net/'
-  'https://sharedeau.eau.attest.azure.net/'
-  'https://sharedncus.ncus.attest.azure.net/'
-  'https://sharedwus.wus.attest.azure.net/'
-  'https://sharedweu.weu.attest.azure.net/'
-  'https://sharedscus.scus.attest.azure.net/'
-  'https://sharedsasia.sasia.attest.azure.net/'
-  'https://sharedsau.sau.attest.azure.net/'
-])
-param maaEndpoint string = 'https://sharedwus.wus.attest.azure.net/'
-
-var disableAlerts = 'false'
-var ascReportingEndpoint = 'https://sharedwus.wus.attest.azure.net/'
 var extensionName = 'GuestAttestation'
-var extensionPublisher = 'Microsoft.Azure.Security.WindowsAttestation'
-var extensionVersion = '1.0'
-var maaTenantName = 'GuestAttestation'
-var useAlternateToken = 'false'
-
-
 
 resource devResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
   scope: subscription()
@@ -164,16 +135,16 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
     location: location
     properties: {
       type: 'GuestAttestation'
-      typeHandlerVersion: extensionVersion
-      publisher: extensionPublisher
+      typeHandlerVersion: '1.0'
+      publisher: 'Microsoft.Azure.Security.WindowsAttestation'
       autoUpgradeMinorVersion: true
       settings: {
         AttestationEndpointCfg: {
-          maaEndpoint: maaEndpoint
-          maaTenantName: maaTenantName
-          ascReportingEndpoint: ascReportingEndpoint
-          useAlternativeToken: useAlternateToken
-          disableAlerts: disableAlerts
+          maaEndpoint: 'https://sharedwus.wus.attest.azure.net/'
+          maaTenantName: 'GuestAttestation'
+          ascReportingEndpoint: 'https://sharedwus.wus.attest.azure.net/'
+          useAlternativeToken: false
+          disableAlerts: false
         }
       }
     }
