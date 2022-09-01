@@ -5,6 +5,7 @@ param adminUsername string
 @secure()
 param adminPassword string
 param tags object
+param kvName string = 'jogardn-kv'
 
 @description('MAA Endpoint to attest to.')
 @allowed([
@@ -178,3 +179,28 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
 }
 
+resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: kvName
+}
+
+resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-01-01' = {
+  name: 'kvPvtEndpoint'
+  location: location
+  tags: tags
+  properties: {
+    subnet: {
+      id: devSubnet.id
+    }
+    privateLinkServiceConnections: [
+      {
+        name: 'kvPvtEndpoint'
+        properties: {
+          groupIds: [
+            'vault'
+          ]
+          privateLinkServiceId: kv.id
+        }
+      }
+    ]
+  }
+}

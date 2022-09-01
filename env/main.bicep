@@ -47,7 +47,7 @@ module hubvnet './modules/hub-default.bicep' = {
   }
 }
 
-module aksvnet './modules/vnet.bicep' = {
+module aksvnet './modules/vnet/vnet.bicep' = {
   name: 'aks-vnet'
   scope: resourceGroup(aksrg.name)
   params: {
@@ -115,7 +115,7 @@ module acrPrivateEndpoint 'modules/vnet/privateendpoint.bicep' = {
 //   }
 // }
 
-module devvnet './modules/vnet.bicep' = {
+module devvnet './modules/vnet/vnet.bicep' = {
   name: 'dev-vnet'
   scope: resourceGroup(devrg.name)
   params: {

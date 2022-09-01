@@ -868,25 +868,6 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-01-01' = {
-  name: 'kvPvtEndpoint'
-  location: location
-  tags: tags
-  properties: {
-    privateLinkServiceConnections: [
-      {
-        name: 'kvPvtEndpoint'
-        properties: {
-          groupIds: [
-            'vault'
-          ]
-          privateLinkServiceId: kv.id
-        }
-      }
-    ]
-  }
-}
-
 
 output hubVnetId string = hubVnet.id
 output hubFwPrivateIPAddress string = hubFw.properties.ipConfigurations[0].properties.privateIPAddress
