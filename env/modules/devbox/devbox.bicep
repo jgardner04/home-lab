@@ -1,13 +1,11 @@
 param location string
 param devRgName string
-param kvName string = 'jogardn-kv'
 @secure()
 param adminUsername string
 @secure()
 param adminPassword string
 param tags object
-param vTPM bool = true
-param secureBoot bool = true
+
 @description('MAA Endpoint to attest to.')
 @allowed([
   'https://sharedcus.cus.attest.azure.net/'
@@ -160,20 +158,20 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
   tags: tags
   resource attestation 'extensions' = {
-    name: 'GuestAttestation'
+    name: extensionName
     location: location
     properties: {
       type: 'GuestAttestation'
-      typeHandlerVersion: '1.0'
-      publisher: 'Microsoft.Azure.Security.WindowsAttestation'
+      typeHandlerVersion: extensionVersion
+      publisher: extensionPublisher
       autoUpgradeMinorVersion: true
       settings: {
         AttestationEndpointCfg: {
           maaEndpoint: maaEndpoint
-          maaTenantName: 'GuestAttestation'
+          maaTenantName: maaTenantName
           ascReportingEndpoint: ascReportingEndpoint
-          useAlternativeToken: false
-          disableAlerts: false
+          useAlternativeToken: useAlternateToken
+          disableAlerts: disableAlerts
         }
       }
     }
