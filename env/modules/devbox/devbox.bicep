@@ -26,10 +26,10 @@ param secureBoot bool = true
   'https://sharedsasia.sasia.attest.azure.net/'
   'https://sharedsau.sau.attest.azure.net/'
 ])
-param maaEndpoint string = 'https://sharedeus2.eus2.attest.azure.net/'
+param maaEndpoint string = 'https://sharedwus.wus.attest.azure.net/'
 
 var disableAlerts = 'false'
-var ascReportingEndpoint = 'https://sharedeus2.eus2.attest.azure.net/'
+var ascReportingEndpoint = 'https://sharedwus.wus.attest.azure.net/'
 var extensionName = 'GuestAttestation'
 var extensionPublisher = 'Microsoft.Azure.Security.WindowsAttestation'
 var extensionVersion = '1.0'
@@ -91,7 +91,7 @@ resource securityGroup 'Microsoft.Network/networkSecurityGroups@2022-01-01' = {
   tags: tags
 }
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: 'VM-01'
   location: location
   identity: {
@@ -116,6 +116,18 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         }
         deleteOption: 'Delete'
       }
+      dataDisks: [
+        {
+          name: 'DS-02'
+          createOption: 'Empty'
+          diskSizeGB: 1024
+          lun: 0
+          managedDisk: {
+            storageAccountType: 'Premium_LRS'
+          }
+          deleteOption: 'Delete'
+        }
+      ]
     }
     networkProfile: {
       networkInterfaces: [
@@ -129,8 +141,8 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
     securityProfile: {
       uefiSettings: {
-        secureBootEnabled: secureBoot
-        vTpmEnabled: vTPM
+        secureBootEnabled: true
+        vTpmEnabled: true
       }
       securityType: 'TrustedLaunch'
     }
@@ -138,14 +150,6 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       computerName: 'VM-01'
       adminUsername: adminUsername
       adminPassword: adminPassword
-      windowsConfiguration: {
-        provisionVMAgent: true
-        enableAutomaticUpdates: true
-        patchSettings: {
-          patchMode: 'AutomaticByOS'
-          enableHotpatching: false
-        }
-      }
     }
     diagnosticsProfile: {
       bootDiagnostics: {
@@ -155,77 +159,24 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     licenseType: 'Windows_Client'
   }
   tags: tags
-}
-
-resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = if (vTPM && secureBoot) {
-  parent: virtualMachine
-  name: extensionName
-  location: location
-  properties: {
-    publisher: extensionPublisher
-    type: extensionName
-    typeHandlerVersion: extensionVersion
-    autoUpgradeMinorVersion: true
-    settings: {
-      AttestationEndpointCfg: {
-        maaEndpoint: maaEndpoint
-        maaTenantName: maaTenantName
-        ascReportingEndpoint: ascReportingEndpoint
-        useAlternateToken: useAlternateToken
-        disableAlerts: disableAlerts
+  resource attestation 'extensions' = {
+    name: 'GuestAttestation'
+    location: location
+    properties: {
+      type: 'GuestAttestation'
+      typeHandlerVersion: '1.0'
+      publisher: 'Microsoft.Azure.Security.WindowsAttestation'
+      autoUpgradeMinorVersion: true
+      settings: {
+        AttestationEndpointCfg: {
+          maaEndpoint: maaEndpoint
+          maaTenantName: 'GuestAttestation'
+          ascReportingEndpoint: ascReportingEndpoint
+          useAlternativeToken: false
+          disableAlerts: false
+        }
       }
     }
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: kvName
-  scope: resourceGroup(devResourceGroup.name)
-}
-
-module vmAccessPolicy '../keyvault/access-policy.bicep' = {
-  name: 'vm-deployment'
-  params: {
-    kvName: keyVault.name
-    policyName: 'vm-deployment'
-    accessPolicy: {
-      tenantId: tenant().tenantId
-      objectId: virtualMachine.identity.principalId
-      permissions: {
-        keys: [
-          'list'
-          'get'
-          'decrypt'
-          'encrypt'
-          'unwrapKey'
-          'wrapKey'
-        ]
-        secrets: [
-          'list'
-          'get'
-        ]
-      }
-    }
-  }
-}
-
-resource diskEncryption 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
-  parent: virtualMachine
-  dependsOn: [
-    vmAccessPolicy
-  ]
-  name: 'diskEncryption'
-  location: location
-  properties: {
-    publisher: 'Microsoft.Azure.Security'
-    type: 'AzureDiskEncryption'
-    typeHandlerVersion: '2.2'
-    autoUpgradeMinorVersion: true
-    settings: {
-      EncryptionOperation: 'EnableEncryption'
-      KeyVaultURL: 'https://${keyVault.name}${environment().suffixes.keyvaultDns}'
-      KeyVaultResourceId: keyVault.id
-      VolumeType: 'All'
-    }
-  }
-}
