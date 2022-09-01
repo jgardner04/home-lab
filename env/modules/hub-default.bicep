@@ -862,9 +862,28 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
       family: 'A'
     }
     networkAcls: {
-      defaultAction: 'Allow'
+      defaultAction: 'Deny'
       bypass: 'AzureServices'
     }
+  }
+}
+
+resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-01-01' = {
+  name: 'kvPvtEndpoint'
+  location: location
+  tags: tags
+  properties: {
+    privateLinkServiceConnections: [
+      {
+        name: 'kvPvtEndpoint'
+        properties: {
+          groupIds: [
+            'vault'
+          ]
+          privateLinkServiceId: kv.id
+        }
+      }
+    ]
   }
 }
 
