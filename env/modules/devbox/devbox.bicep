@@ -1,5 +1,6 @@
 param location string
 param devRgName string
+param hubRgName string
 @secure()
 param adminUsername string
 @secure()
@@ -179,8 +180,14 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
 }
 
+resource hubRg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  scope: subscription()
+  name: hubRgName
+}
+
 resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: kvName
+  scope: resourceGroup(hubRg.name)
 }
 
 resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-01-01' = {

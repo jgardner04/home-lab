@@ -140,7 +140,7 @@ module devvnet './modules/vnet/vnet.bicep' = {
 }
 
 // Peer hub with aks vnets
-module hubtoakspeering './modules/vnet-peering.bicep' = {
+module hubtoakspeering './modules/vnet/vnet-peering.bicep' = {
   name: 'hub-to-aks'
   scope: resourceGroup(hubrg.name)
   dependsOn: [
@@ -153,7 +153,7 @@ module hubtoakspeering './modules/vnet-peering.bicep' = {
     remoteVnetID: aksvnet.outputs.vnetID
   }
 }
-module akstohubpeering './modules/vnet-peering.bicep' = {
+module akstohubpeering './modules/vnet/vnet-peering.bicep' = {
   name: 'aks-to-hub'
   scope: resourceGroup(aksrg.name)
   dependsOn: [
@@ -167,7 +167,7 @@ module akstohubpeering './modules/vnet-peering.bicep' = {
   }
 }
 // Peer hub with dev vnets
-module hubtodevpeering './modules/vnet-peering.bicep' = {
+module hubtodevpeering './modules/vnet/vnet-peering.bicep' = {
   name: 'hub-to-dev'
   scope: resourceGroup(hubrg.name)
   dependsOn: [
@@ -180,7 +180,7 @@ module hubtodevpeering './modules/vnet-peering.bicep' = {
     remoteVnetID: devvnet.outputs.vnetID
   }
 }
-module devtohubpeering './modules/vnet-peering.bicep' = {
+module devtohubpeering './modules/vnet/vnet-peering.bicep' = {
   name: 'dev-to-hub'
   scope: resourceGroup(devrg.name)
   dependsOn: [
@@ -195,7 +195,7 @@ module devtohubpeering './modules/vnet-peering.bicep' = {
 }
 
 // Create & assign the route tables
-module aksroutetable './modules/routetable.bicep'={
+module aksroutetable './modules/vnet/routetable.bicep'={
   name: 'aks-rt'
   scope: resourceGroup(aksrg.name)
   params:{
@@ -205,7 +205,7 @@ module aksroutetable './modules/routetable.bicep'={
     nextHopIpAddress: hubvnet.outputs.hubFwPrivateIPAddress
   }
 }
-module devroutetable './modules/routetable.bicep'={
+module devroutetable './modules/vnet/routetable.bicep'={
   name: 'dev-rt'
   scope: resourceGroup(devrg.name)
   params:{
@@ -229,7 +229,7 @@ module akscluster './modules/aks/aks-cluster.bicep' = {
 }
 
 // Link the private DNS zone of AKS to hub & dev vnets
-module privatednshublink './modules/private-dns-vnet-link.bicep' = {
+module privatednshublink './modules/vnet/private-dns-vnet-link.bicep' = {
   name: 'link-to-hub-vnet'
   dependsOn: [
     akscluster
@@ -242,7 +242,7 @@ module privatednshublink './modules/private-dns-vnet-link.bicep' = {
     vnetName: hubvnet.name
   }
 } 
-module privatednsdevlink './modules/private-dns-vnet-link.bicep' = {
+module privatednsdevlink './modules/vnet/private-dns-vnet-link.bicep' = {
   name: 'link-to-dev-vnet'
   dependsOn: [
     akscluster
@@ -270,6 +270,7 @@ module devVM './modules/devbox/devbox.bicep' = {
     adminUsername: adminUsername
     adminPassword: adminPassword
     tags: tags
+    hubRgName: hubrg.name
   }
 }
 
