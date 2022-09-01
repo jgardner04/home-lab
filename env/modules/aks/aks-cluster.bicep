@@ -91,7 +91,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
   }
 }
 
-module windowsPool './aks/agent-pool.bicep' = {
+module windowsPool './agent-pool.bicep' = {
   name: 'win'
   params: {
     poolName: 'win'
@@ -111,7 +111,7 @@ module windowsPool './aks/agent-pool.bicep' = {
   }
 }
 
-module linuxPool './aks/agent-pool.bicep' = {
+module linuxPool './agent-pool.bicep' = {
   name: 'linux'
   params: {
     poolName: 'linux'

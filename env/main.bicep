@@ -217,7 +217,7 @@ module devroutetable './modules/routetable.bicep'={
 }
 
 // Create the AKS Cluster
-module akscluster './modules/aks-cluster.bicep' = {
+module akscluster './modules/aks/aks-cluster.bicep' = {
   name: clusterName
   scope: resourceGroup(aksrg.name)
   params: {
