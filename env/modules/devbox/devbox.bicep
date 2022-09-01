@@ -70,7 +70,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
   properties: {
     hardwareProfile: {
-      vmSize: any('Standard_D8s_v5')
+      vmSize: any('Standard_E4bs_v5')
     }
     storageProfile: {
       imageReference: {
