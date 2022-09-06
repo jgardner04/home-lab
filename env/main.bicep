@@ -1,21 +1,5 @@
 targetScope = 'subscription'
 
-param location string
-param localAddressPrefixes string
-param localGatewayIpAddress string
-param vpnPreSharedKey string
-param clusterName string = 'aks-cl01'
-var basename = 'home-lab'
-var owner = 'jogardn'
-@secure()
-param adminUsername string
-@secure()
-param adminPassword string
-var tags = {
-  owner: owner
-  purpose: 'home-lab'
-}
-
 resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${basename}-hub-rg'
   location: location
@@ -68,6 +52,11 @@ module aksvnet './modules/vnet/vnet.bicep' = {
       }
       {
         name: 'acr'
+        subnetPrefix: '192.168.147.0/24'
+        routeTableid: ''
+      }
+      {
+        name: apimVnetSubnetName
         subnetPrefix: '192.168.147.0/24'
         routeTableid: ''
       }
@@ -274,16 +263,40 @@ module devVM './modules/devbox/devbox.bicep' = {
   }
 }
 
-// Create a jumpbox VM, ubuntu OS with docker
-// module agentvm './modules/ubuntu-docker.bicep' = {
-//   name: '${prefix}-vm'
-//   scope: resourceGroup(devrg.name)
-//   params: {
-//     vmName: '${prefix}-vm'
-//     location: location
-//     adminUsername: 'adminuser'
-//     adminPasswordOrKey: adminPasswordOrKey
-//     subnetID: devvnet.outputs.subnet[0].subnetID
-//     authenticationType: 'password'
-//   }
-// }
+// Deploy APIM to the AKS RG
+module apim './modules/apim/apim.bicep' = {
+  name: 'apim'
+  dependsOn: [
+    aksvnet
+  ]
+  scope: resourceGroup(aksrg.name)
+  params: {
+    location: location
+    tags: tags
+    notificationSenderEmail: notificationSenderEmail
+    publisherEmail: publisherEmail
+    publisherName: publisherName
+    vnetName: aksvnet.name
+    subnetName: apimVnetSubnetName
+  }
+}
+
+param location string
+param localAddressPrefixes string
+param localGatewayIpAddress string
+param vpnPreSharedKey string
+param clusterName string = 'aks-cl01'
+var basename = 'home-lab'
+var owner = 'jogardn'
+@secure()
+param adminUsername string
+@secure()
+param adminPassword string
+var tags = {
+  owner: owner
+  purpose: 'home-lab'
+}
+param notificationSenderEmail string
+param publisherEmail string
+param publisherName string
+param apimVnetSubnetName string = 'apim'

@@ -13,3 +13,4 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' = {
 }
 
 output privateEndpointName string = privateEndpoint.name
+output privateEndpointId string = privateEndpoint.id
