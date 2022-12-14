@@ -28,6 +28,6 @@ jobs:
           region: ${{ secrets.LOCATION }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           template: ./env/main.bicep
-          parameters: location=${{ secrets.LOCATION }} localAddressPrefixes=${{ secrets.LOCAL_ADDRESS_PREFIX }} localGatewayIpAddress=${{ secrets.LOCAL_GATEWAY_IP }} vpnPreSharedKey=${{ secrets.VPN_KEY }} adminUsername=${{ secrets.ADMIN_USERNAME }} adminPassword=${{ secrets.ADMIN_PASSWORD }} notificationSenderEmail=${{ secrets.NOTIFICATION_EMAIL }} publisherEmail=${{ secrets.NOTIFICATION_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }} 
+          parameters: location=${{ secrets.LOCATION }}
           failOnStdErr: false
     
