@@ -16,7 +16,7 @@ module vwan 'modules/networking/vWanHub.bicep' = {
   }
 }
 
-module vnet 'modules/networking/vNet.bicep' = {
+module vnet 'modules/networking/vnet.bicep' = {
   scope: resourceGroup(hubrg.name)
   name: 'vnet'
   params: {
