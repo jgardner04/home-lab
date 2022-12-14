@@ -6,8 +6,15 @@ resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
 }
 
-
-
+module vwan 'modules/networking/vWanHub.bicep' = {
+  scope: resourceGroup(hubrg.name)
+  name: 'vwan'
+  params: {
+    baseName: basename
+    location: location
+    tags: tags
+  }
+}
 
 param location string
 var basename = 'home-lab'
