@@ -23,6 +23,9 @@ resource vwanHub 'Microsoft.Network/virtualHubs@2022-05-01' = {
   }
 }
 
+// Create the hub virtual network
+
+
 param baseName string
 param location string
 param tags object

@@ -16,6 +16,17 @@ module vwan 'modules/networking/vWanHub.bicep' = {
   }
 }
 
+module vnet 'modules/networking/vNet.bicep' = {
+  scope: resourceGroup(hubrg.name)
+  name: 'vnet'
+  params: {
+    name: '${basename}-hub-vnet'
+    location: location
+    tags: tags
+    addressPrefixes: ['10.0.0.0/16']
+  }
+}
+
 param location string
 var basename = 'home-lab'
 var owner = 'jogardn'
