@@ -1,6 +1,7 @@
 targetScope = 'subscription'
 
 resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  targetScope = 'subscription'
   name: '${basename}-hub-rg'
   location: location
   tags: tags
