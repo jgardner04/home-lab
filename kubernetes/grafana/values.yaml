@@ -1,6 +1,0 @@
-- extraVolumeMounts:
-  - name: plugins
-    mountPath: /var/lib/grafana/plugins
-    subPath: configs/grafana/plugins
-    existingClaim: existing-grafana-claim
-    readOnly: false
