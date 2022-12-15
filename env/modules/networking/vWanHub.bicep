@@ -40,7 +40,16 @@ resource hubNetworkConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkCo
       associatedRouteTable: {
         id: hubRouteTable.id
       }
-  
+      propagatedRouteTables: {
+        labels: [
+          'VNet'
+        ]
+        ids: [
+          {
+            id: hubRouteTable.id
+          }
+        ]
+      }
     }
   }
 }
@@ -64,12 +73,49 @@ resource firewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
   }
 }
 
-resource hubRouteTable 'Microsoft.Network/virtualHubs/routeTables@2022-07-01' = {
+resource routeTable 'Microsoft.Network/routeTables@2022-07-01' = {
+  name: 'RT-01'
+  location: location
+  properties: {
+    disableBgpRoutePropagation: true
+    routes: [
+      {
+        name: 'jump-to-inet'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'Internet'
+        }
+      }
+    ]
+  }
+}
+
+resource hubRouteTable 'Microsoft.Network/virtualHubs/routeTables@2022-05-01' = {
   parent: vwanHub
   name: '${baseName}-vwan-hub-route-table'
   properties: {
+    labels: [
+      'VNet'
+    ]
     routes: [
-      
+      {
+        name: 'WorkloadToFirewall'
+        destinationType: 'CIDR'
+        destinations: [
+          '10.0.1.0/24'
+        ]
+        nextHopType: 'ResourceId'
+        nextHop: firewall.id
+      }
+      {
+        name: 'InternetToFirewall'
+        destinationType: 'Internet'
+        destinations: [
+          '0.0.0.0/0'
+        ]
+        nextHopType: 'ResourceId'
+        nextHop: firewall.id
+      }
     ]
   }
 }
