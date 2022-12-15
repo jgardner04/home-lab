@@ -40,12 +40,7 @@ resource hubNetworkConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkCo
       associatedRouteTable: {
         id: hubRouteTable.id
       }
-      propagatedRouteTables: [
-        ids: [
-          {
-          id: hubRouteTable.id
-        }
-      ]
+  
     }
   }
 }
