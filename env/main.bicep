@@ -13,6 +13,7 @@ module vwan 'modules/networking/vWanHub.bicep' = {
     baseName: basename
     location: location
     tags: tags
+    virtualnNetworkId: vnet.outputs.id
   }
 }
 

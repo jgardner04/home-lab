@@ -9,6 +9,8 @@ resource virtualNetwork 'Microsoft.Network/virtualnetworks@2015-05-01-preview' =
   }
 }
 
+output id string = virtualNetwork.id
+
 param name string
 param location string
 param tags object
