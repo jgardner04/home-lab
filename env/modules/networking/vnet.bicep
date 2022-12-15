@@ -1,4 +1,4 @@
-resource virtualNetwork 'Microsoft.Network/virtualnetworks@2015-05-01-preview' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: name
   location: location
   tags: tags
