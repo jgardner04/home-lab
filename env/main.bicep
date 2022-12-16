@@ -34,6 +34,17 @@ module hubVnet 'modules/networking/vnet.bicep' = {
   }
 }
 
+// Add AKS Cluster
+module aks 'modules/aks/aks.bicep' = {
+  scope: resourceGroup(aksrg.name)
+  name: 'aks'
+  params: {
+    basename: basename
+    location: location
+    tags: tags
+  }
+}
+
 param location string
 var basename = 'home-lab'
 var owner = 'jogardn'
