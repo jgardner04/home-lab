@@ -34,6 +34,16 @@ module hubVnet 'modules/networking/vnet.bicep' = {
   }
 }
 
+module monitoring 'modules/monitoring/monitoring.bicep' = {
+  scope: resourceGroup(hubrg.name)
+  name: 'monitoring'
+  params: {
+    basename: basename
+    location: location
+    tags: tags
+  }
+}
+
 // Add AKS Cluster
 module aks 'modules/aks/aks.bicep' = {
   scope: resourceGroup(aksrg.name)
@@ -42,6 +52,7 @@ module aks 'modules/aks/aks.bicep' = {
     basename: basename
     location: location
     tags: tags
+    logAnalyticsWorkspaceId: monitoring.outputs.logAnalyticsWorkspaceId
   }
 }
 
