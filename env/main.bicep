@@ -6,6 +6,12 @@ resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
 }
 
+resource aksrg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+  name: '${basename}-aks-rg'
+  location: location
+  tags: tags
+}
+
 module vwan 'modules/networking/vWanHub.bicep' = {
   scope: resourceGroup(hubrg.name)
   name: 'vwan'
