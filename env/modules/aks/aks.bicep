@@ -5,10 +5,11 @@ module aksVnet '../networking/vnet.bicep' = {
     location: location
     tags: tags
     addressPrefixes: [
-      '10.0.10.0/16'
+      '10.1.0.0/16'
     ]
   }
 }
+
 
 
 param basename string
