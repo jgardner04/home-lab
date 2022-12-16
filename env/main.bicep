@@ -13,11 +13,11 @@ module vwan 'modules/networking/vWanHub.bicep' = {
     baseName: basename
     location: location
     tags: tags
-    virtualnNetworkId: vnet.outputs.id
+    virtualnNetworkId: hubVnet.outputs.id
   }
 }
 
-module vnet 'modules/networking/vnet.bicep' = {
+module hubVnet 'modules/networking/vnet.bicep' = {
   scope: resourceGroup(hubrg.name)
   name: 'vnet'
   params: {
