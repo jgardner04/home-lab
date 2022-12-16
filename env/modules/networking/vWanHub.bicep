@@ -109,7 +109,7 @@ resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2022-05-01'
       }
       {
         name: 'InternetToFirewall'
-        destinationType: 'Internet'
+        destinationType: 'CIDR'
         destinations: [
           '0.0.0.0/0'
         ]
