@@ -70,6 +70,57 @@ resource firewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
     virtualHub: {
       id: vwanHub.id
     }
+    firewallPolicy: {
+      id: firewallPolicy.id
+    }
+  }
+}
+
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2022-07-01' = {
+  name: 'Policy-01'
+  location: location
+  properties: {
+    threatIntelMode: 'Alert'
+  }
+}
+
+resource firewallRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2022-07-01' = {
+  parent: firewallPolicy
+  name: 'DefaultApplicationRuleCollectionGroup'
+  properties: {
+    priority: 300
+    ruleCollections: [
+      {
+        ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+        name: 'RC-01'
+        priority: 100
+        action: {
+          type: 'Allow'
+        }
+        rules: [
+          {
+            ruleType: 'ApplicationRule'
+            name: 'Allow-msft'
+            sourceAddresses: [
+              '*'
+            ]
+            protocols: [
+              {
+                port: 80
+                protocolType: 'Http'
+              }
+              {
+                port: 443
+                protocolType: 'Https'
+              }
+            ]
+            targetFqdns: [
+              '*.microsoft.com'
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
 
