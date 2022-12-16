@@ -90,7 +90,7 @@ resource routeTable 'Microsoft.Network/routeTables@2022-07-01' = {
   }
 }
 
-resource hubRouteTable 'Microsoft.Network/virtualHubs/routeTables@2022-05-01' = {
+resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2022-05-01' = {
   parent: vwanHub
   name: '${baseName}-vwan-hub-route-table'
   properties: {
