@@ -40,6 +40,8 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
         vnetSubnetID: aksSubnet.id
         osType: 'Linux'
         enableAutoScaling: true
+        minCount: 1
+        maxCount: 5
         mode: 'System'
         type: 'VirtualMachineScaleSets'
       }
