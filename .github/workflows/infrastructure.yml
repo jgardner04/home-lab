@@ -28,6 +28,6 @@ jobs:
           region: ${{ secrets.LOCATION }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           template: ./env/main.bicep
-          parameters: location=${{ secrets.LOCATION }}
+          parameters: location=${{ secrets.LOCATION }} vpnSiteIpAddress=${{ secrets.LOCAL_GATEWAY_IP }}
           failOnStdErr: false
     
