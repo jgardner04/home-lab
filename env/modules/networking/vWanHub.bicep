@@ -171,8 +171,52 @@ resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2022-05-01'
   }
 }
 
+resource vpnSite 'Microsoft.Network/vpnSites@2022-07-01' = {
+  name: vpnSitename
+  location: location
+  tags: tags
+  properties: {
+    addressSpace: {
+      addressPrefixes: vpnSiteAddressSpace
+    } 
+    deviceProperties: {
+      linkSpeedInMbps: 1000
+    }
+    ipAddress: vpnSiteIpAddress
+    virtualWan: {
+      id: virtualWan.id
+    }
+  }
+}
+
+resource vpnGateway 'Microsoft.Network/vpnGateways@2022-07-01' = {
+  name: '${baseName}-vpn-gateway'
+  location: location
+  tags: tags
+  properties: {
+    connections: [
+      {
+        name: vpnConnectionName
+        properties: {
+          connectionBandwidth: 1000
+          remoteVpnSite: {
+            id: vpnSite.id
+          }
+        }
+      }
+    ]
+    virtualHub: {
+      id: vwanHub.id
+    }
+  }
+}
+
 
 param baseName string
 param location string
 param tags object
 param virtualnNetworkId string
+param vpnSitename string = 'homeVpnSite'
+param vpnSiteIpAddress string
+param vpnSiteAddressSpace array
+param vpnConnectionName string = 'homeVpn'

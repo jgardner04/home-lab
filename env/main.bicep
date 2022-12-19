@@ -20,6 +20,8 @@ module vwan 'modules/networking/vWanHub.bicep' = {
     location: location
     tags: tags
     virtualnNetworkId: hubVnet.outputs.id
+    vpnSiteIpAddress: vpnSiteIpAddress
+    vpnSiteAddressSpace: vpnSiteAddressSpace
   }
 }
 
@@ -63,4 +65,5 @@ var tags = {
   owner: owner
   purpose: 'home-lab'
 }
-
+param vpnSiteIpAddress string
+param vpnSiteAddressSpace array = ['192.168.1.0/24']
