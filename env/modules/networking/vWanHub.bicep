@@ -180,6 +180,8 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-07-01' = {
       addressPrefixes: vpnSiteAddressSpace
     } 
     deviceProperties: {
+      deviceModel: 'UDMP'
+      deviceVendor: 'Ubiquiti'
       linkSpeedInMbps: 1000
     }
     ipAddress: vpnSiteIpAddress
@@ -199,9 +201,12 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2022-07-01' = {
         name: vpnConnectionName
         properties: {
           connectionBandwidth: 1000
+          enableBgp: false
           remoteVpnSite: {
             id: vpnSite.id
           }
+          sharedKey: sharedKey
+          vpnConnectionProtocolType: 'IKEv2'
         }
       }
     ]
@@ -220,3 +225,4 @@ param vpnSitename string = 'homeVpnSite'
 param vpnSiteIpAddress string
 param vpnSiteAddressSpace array
 param vpnConnectionName string = 'homeVpn'
+param sharedKey string

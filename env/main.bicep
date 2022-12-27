@@ -22,6 +22,7 @@ module vwan 'modules/networking/vWanHub.bicep' = {
     virtualnNetworkId: hubVnet.outputs.id
     vpnSiteIpAddress: vpnSiteIpAddress
     vpnSiteAddressSpace: vpnSiteAddressSpace
+    sharedKey: vpnSharedKey
   }
 }
 
@@ -67,3 +68,4 @@ var tags = {
 }
 param vpnSiteIpAddress string
 param vpnSiteAddressSpace array = ['192.168.1.0/24']
+param vpnSharedKey string
