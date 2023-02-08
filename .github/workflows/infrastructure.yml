@@ -6,7 +6,7 @@ on:
     paths:
       - 'env/**'
 jobs:
-  build-and-deploy:
+  infra:
     runs-on: ubuntu-latest
     steps:
      
@@ -30,4 +30,17 @@ jobs:
           template: ./env/main.bicep
           parameters: location=${{ secrets.LOCATION }}
           failOnStdErr: false
-    
+  tailscale:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    steps:
+    - uses: deliverybot/helm@master
+      with:
+        release: tailscale-subnet-router
+        namespace: default
+        chart: mvisonneau/tailscale-relay
+        repo: https://charts.visonneau.fr
+        repo-alias: mvisonneau
+        values: |
+          config.authKey: {{ secrets.TAILSCALE_AUTH_KEY}}
+          config.variables.TAILSCALE_ADVERTISE_ROUTES: {{ secrets.TAILSCALE_ADVERTISE_ROUTES }}
