@@ -1,25 +1,5 @@
-resource aksVnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
-  name: '${basename}-aks-vnet'
-  location: location
-  tags: tags
-  properties: {
-    addressSpace: {
-      addressPrefixes: aksVnetAddressPrefix
-    }
-  }
-}
 
-resource aksSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-07-01' = {
-  name: 'aksSubnet'
-  parent: aksVnet
-  properties: {
-    addressPrefix: aksSubnetPrefix
-    privateEndpointNetworkPolicies: 'Enabled'
-    privateLinkServiceNetworkPolicies: 'Enabled'
-  }
-}
-
-resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
+resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
   name: '${basename}-aks'
   location: location
   identity: {
@@ -37,7 +17,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
         name: toLower(nodePoolName)
         count: nodePoolCount
         vmSize: nodePoolVmSize
-        vnetSubnetID: aksSubnet.id
         osType: 'Linux'
         enableAutoScaling: true
         minCount: 1
@@ -56,7 +35,7 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
     }
     enableRBAC: true
     networkProfile: {
-      networkPlugin: 'azure'
+      networkPlugin: 'kubenet'
       networkPolicy: 'azure'
       loadBalancerSku: 'standard'
     }
@@ -69,8 +48,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
 param basename string
 param location string
 param tags object
-param aksVnetAddressPrefix array = ['10.1.0.0/16']
-param aksSubnetPrefix string = '10.1.1.0/24'
 param aksClusterDnsPrefix string = '${basename}-aks'
 param nodePoolName string = 'linux'
 param nodePoolCount int = 1
