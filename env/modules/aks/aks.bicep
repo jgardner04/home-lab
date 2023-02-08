@@ -36,7 +36,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
     enableRBAC: true
     networkProfile: {
       networkPlugin: 'kubenet'
-      networkPolicy: 'azure'
       loadBalancerSku: 'standard'
     }
     apiServerAccessProfile: {
