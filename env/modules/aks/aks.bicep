@@ -55,6 +55,18 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
   }
 }
 
+// Add Managed Grafana Module from ../modules/managed-grafana
+module grafana '../monitoring/monitoring.bicep' = {
+  name: 'grafana'
+  params: {
+    basename: basename
+    location: location
+    tags: tags
+    azureMonitorWorkspaceResourceId: logAnalyticsWorkspaceId
+  }
+}
+
+
 param basename string
 param location string
 param tags object
