@@ -25,6 +25,7 @@ module aks 'modules/aks/aks.bicep' = {
     location: location
     tags: tags
     logAnalyticsWorkspaceId: la.id
+    azureMonitorWorkspaceResourceId: rgMonitoring.id
   }
 }
 

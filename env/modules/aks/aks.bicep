@@ -62,7 +62,7 @@ module grafana '../monitoring/monitoring.bicep' = {
     basename: basename
     location: location
     tags: tags
-    azureMonitorWorkspaceResourceId: logAnalyticsWorkspaceId
+    azureMonitorWorkspaceResourceId: azureMonitorWorkspaceResourceId
   }
 }
 
@@ -76,3 +76,4 @@ param userNodePoolName string = 'user'
 param nodePoolCount int = 3
 param nodePoolVmSize string = 'Standard_D8s_v3'
 param logAnalyticsWorkspaceId string
+param azureMonitorWorkspaceResourceId string
