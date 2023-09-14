@@ -11,7 +11,7 @@ param userId string = ''
   'UpperCamelCase'
   'KebabCase'
 ])
-param letterCaseType string = 'UpperCamelCase'
+param letterCaseType string = 'CamelCase'
 
 @description('Specifies the location of the AKS cluster.')
 param location string = resourceGroup().location
@@ -47,7 +47,7 @@ param aksClusterNetworkPlugin string = 'azure'
   'Overlay'
 ])
 
-param aksClusterNetworkPluginMode string = ''
+param aksClusterNetworkPluginMode string = 'Overlay'
 
 @description('Specifies the network policy used for building Kubernetes network. - calico or azure')
 @allowed([
@@ -73,7 +73,7 @@ param aksClusterDnsServiceIP string = '172.16.0.10'
 param aksClusterLoadBalancerSku string = 'standard'
 
 @description('Specifies whether Network Observability is enabled or not. When enabled, network monitoring generates metrics in Prometheus format.')
-param aksClusterMonitoringEnabled bool = false
+param aksClusterMonitoringEnabled bool = true
 
 @description('Specifies the IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4 and IPv6.')
 param aksClusterIpFamilies array = ['IPv4']
@@ -95,7 +95,7 @@ param aksClusterOutboundType string = 'loadBalancer'
 param aksClusterSkuTier string = 'Standard'
 
 @description('Specifies the version of Kubernetes specified when creating the managed cluster.')
-param aksClusterKubernetesVersion string = '1.18.8'
+param aksClusterKubernetesVersion string = '1.27.3'
 
 @description('Specifies the administrator username of Linux virtual machines.')
 param aksClusterAdminUsername string = 'azureuser'
@@ -116,7 +116,7 @@ param aadProfileAdminGroupObjectIDs array = []
   'SecurityPatch'
   'Unmanaged'
 ])
-param aksClusterNodeOSUpgradeChannel string = 'Unmanaged'
+param aksClusterNodeOSUpgradeChannel string = 'NodeImage'
 
 @description('Specifies the upgrade channel for auto upgrade. Allowed values include rapid, stable, patch, node-image, none.')
 @allowed([
@@ -176,7 +176,7 @@ param systemAgentPoolOsType string = 'Linux'
   'Windows2022'
   'AzureLinux'
 ])
-param systemAgentPoolOsSKU string = 'Ubuntu'
+param systemAgentPoolOsSKU string = 'AzureLinux'
 
 @description('Specifies the maximum number of pods that can run on a node in the system node pool. The maximum number of pods per node in an AKS cluster is 250. The default maximum number of pods per node varies between kubenet and Azure CNI networking, and the method of cluster deployment.')
 param systemAgentPoolMaxPods int = 30
@@ -264,7 +264,7 @@ param userAgentPoolOsType string = 'Linux'
   'Windows2022'
   'AzureLinux'
 ])
-param userAgentPoolOsSKU string = 'Ubuntu'
+param userAgentPoolOsSKU string = 'AzureLinux'
 
 @description('Specifies the maximum number of pods that can run on a node in the user node pool. The maximum number of pods per node in an AKS cluster is 250. The default maximum number of pods per node varies between kubenet and Azure CNI networking, and the method of cluster deployment.')
 param userAgentPoolMaxPods int = 30
@@ -553,7 +553,7 @@ param logAnalyticsWorkspaceName string = letterCaseType == 'UpperCamelCase' ? '$
 param logAnalyticsSku string = 'PerNode'
 
 @description('Specifies whether creating or not a jumpbox virtual machine in the AKS cluster virtual network.')
-param vmEnabled bool = true
+param vmEnabled bool = false
 
 @description('Specifies the name of the virtual machine.')
 param vmName string = 'TestVm'
@@ -575,7 +575,7 @@ param imageSku string = '22_04-lts-gen2'
   'sshPublicKey'
   'password'
 ])
-param authenticationType string = 'password'
+param authenticationType string = 'sshPublicKey'
 
 @description('Specifies the name of the administrator account of the virtual machine.')
 param vmAdminUsername string
@@ -633,13 +633,13 @@ param acrAdminUserEnabled bool = false
 param acrSku string = 'Premium'
 
 @description('Specifies whether Azure Bastion should be created.')
-param bastionHostEnabled bool = true
+param bastionHostEnabled bool = false
 
 @description('Specifies the name of the Azure Bastion resource.')
 param bastionHostName string = letterCaseType == 'UpperCamelCase' ? '${toUpper(first(prefix))}${toLower(substring(prefix, 1, length(prefix) - 1))}Bastion' : letterCaseType == 'CamelCase' ? '${toLower(prefix)}Bastion' : '${toLower(prefix)}-bastion'
 
 @description('Specifies whether creating the Application Gateway and enabling the Application Gateway Ingress Controller or not.')
-param applicationGatewayEnabled bool = false
+param applicationGatewayEnabled bool = true
 
 @description('Specifies the name of the Application Gateway.')
 param applicationGatewayName string = letterCaseType == 'UpperCamelCase' ? '${toUpper(first(prefix))}${toLower(substring(prefix, 1, length(prefix) - 1))}ApplicationGateway' : letterCaseType == 'CamelCase' ? '${toLower(prefix)}ApplicationGateway' : '${toLower(prefix)}-application-gateway'
@@ -834,7 +834,7 @@ param actionGroupEmailAddress string
 param actionGroupUseCommonAlertSchema bool = false
 
 @description('Specifies the country code of the SMS receiver.')
-param actionGroupCountryCode string = '39'
+param actionGroupCountryCode string = '1'
 
 @description('Specifies the phone number of the SMS receiver.')
 param actionGroupPhoneNumber string = ''
@@ -899,7 +899,7 @@ param grafanaPublicNetworkAccess	string = 'Enabled'
 param grafanaZoneRedundancy string = 'Disabled'
 
 @description('Specifies the subdomain of the Kubernetes ingress object.')
-param subdomain string
+param subdomain string = 'aks'
 
 @description('Specifies the domain of the Kubernetes ingress object.')
 param domain string = 'contoso.internal'
