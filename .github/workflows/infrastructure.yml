@@ -27,7 +27,7 @@ jobs:
           resourceGroupName: ${{ secrets.AZURE_RG }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           template: ./env/main.bicep
-          parameters: userId=${{ secrets.ADMINUSERID }} aksClusterSshPublicKey=''
+          parameters: userId=${{ secrets.ADMINUSERID }} aksClusterSshPublicKey='' actionGroupEmailAddress=${{ secrets.ACTION_GROUP_EMAIL }} deploymentScriptUri='https://raw.githubusercontent.com/jgardner04/home-lab/main/env/deploy.sh' namespace='demo' serviceAccountName=${{ secrets.SERVICE_ACCOUNT_NAME }} vmAdminPasswordOrKey=${{ secrets.VMADMINPASSWORDORKEY }} vmAdminUsername=${{ secrets.VMADMINUSERNAME }}
           failOnStdErr: false
 
   # tailscale:
