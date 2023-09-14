@@ -30,9 +30,10 @@ jobs:
           template: ./env/main.bicep
           parameters: location=${{ secrets.LOCATION }}
           failOnStdErr: false
+
   tailscale:
     runs-on: ubuntu-latest
-    needs: build-and-deploy
+    needs: infra
     steps:
     - uses: deliverybot/helm@master
       with:
