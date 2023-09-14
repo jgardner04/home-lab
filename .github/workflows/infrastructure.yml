@@ -27,7 +27,7 @@ jobs:
           resourceGroupName: ${{ secrets.AZURE_RG }}
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           template: ./env/main.bicep
-          parameters: userId=${{ secrets.ADMINUSERID }} aksClusterSshPublicKey=${{ secrets.AKS_PUBLIC_KEY }}
+          parameters: userId=${{ secrets.ADMINUSERID }} aksClusterSshPublicKey=''
           failOnStdErr: false
 
   # tailscale:
