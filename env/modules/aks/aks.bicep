@@ -19,9 +19,20 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
         vmSize: nodePoolVmSize
         osType: 'Linux'
         enableAutoScaling: true
-        minCount: 1
+        minCount: 3
         maxCount: 5
         mode: 'System'
+        type: 'VirtualMachineScaleSets'
+      }
+      {
+        name: toLower(userNodePoolName)
+        count: nodePoolCount
+        vmSize: nodePoolVmSize
+        osType: 'Linux'
+        enableAutoScaling: true
+        minCount: 3
+        maxCount: 5
+        mode: 'User'
         type: 'VirtualMachineScaleSets'
       }
     ]
@@ -49,6 +60,7 @@ param location string
 param tags object
 param aksClusterDnsPrefix string = '${basename}-aks'
 param nodePoolName string = 'linux'
-param nodePoolCount int = 1
+param userNodePoolName string = 'user'
+param nodePoolCount int = 3
 param nodePoolVmSize string = 'Standard_D8s_v3'
 param logAnalyticsWorkspaceId string
